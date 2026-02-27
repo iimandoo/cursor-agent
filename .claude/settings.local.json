@@ -1,0 +1,19 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm install:*)",
+      "Bash(npx shadcn@latest add:*)",
+      "Bash(npm run build:*)",
+      "Bash(npx next build:*)",
+      "Bash(npx supabase:*)",
+      "Bash(npx next dev:*)",
+      "Bash(node -e:*)",
+      "Bash(npx dotenv:*)",
+      "Bash(curl -s \"https://paixoffnwmhehspidmns.supabase.co/auth/v1/settings\" -H \"apikey: sb_publishable_ZtnaAoVhkifaWEgTec697g_f7i9zq3J\")",
+      "Bash(curl:*)",
+      "Bash(npx create-next-app:*)",
+      "Bash(npx create-next-app@latest:*)",
+      "Bash(npx shadcn@latest init:*)"
+    ]
+  }
+}
