@@ -16,7 +16,8 @@
       "Bash(npx shadcn@latest init:*)",
       "Bash(node --version)",
       "Bash(npm --version)",
-      "Bash(printf \"n\\\\n\")"
+      "Bash(printf \"n\\\\n\")",
+      "Bash(npm uninstall babel-plugin-styled-components)"
     ]
   }
 }
