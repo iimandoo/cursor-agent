@@ -3,7 +3,7 @@
 import styled from 'styled-components';
 import { HeroSection } from '@/components/sections/hero';
 import { AboutSection } from '@/components/sections/about';
-import { ProjectsSection } from '@/components/sections/projects';
+import { ImpactSection } from '@/components/sections/impact';
 import { ContactSection } from '@/components/sections/contact';
 
 const MainContainer = styled.main`
@@ -16,7 +16,7 @@ export default function Home() {
     <MainContainer>
       <HeroSection />
       <AboutSection />
-      <ProjectsSection />
+      <ImpactSection />
       <ContactSection />
     </MainContainer>
   );

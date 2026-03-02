@@ -23,17 +23,12 @@ export const resume = {
     title: 'Full-Side Engineer',
     subtitle: '기획 · 설계 · 개발을 아우르는 AI 기반 제품 엔지니어',
     email: 'euneundh@gmail.com',
-    phone: '',
-    location: 'Seoul, South Korea',
+    phone: '010-7205-0408',
     bio: '기획의 의도를 기술 명세로 완벽히 전환하고, 디자인과 개발의 경계를 허물어 비즈니스 가치를 제품으로 빠르게 구현하는 Full-Side 엔지니어입니다. AI 도구와 자동화 프로세스를 적극 활용하여 개발 생산성을 극대화하며, 사용자 중심의 서비스 구조 개선에 강점이 있습니다.',
     image: '/images/profile.jpg',
     social: {
       github: 'https://github.com/iimandoo',
       linkedin: '',
-    },
-    availability: {
-      status: 'open' as const,
-      message: '계약직 · 프리랜서 · 정규직 포지션 검토 가능',
     },
   },
 
@@ -47,7 +42,8 @@ export const resume = {
         company: '(주)마타에듀',
         position: '차장 · Product Engineer (AI 마타수학 팀)',
         period: { start: '2023-03', end: 'present' },
-        description: 'AI 기반 진단 학습 플랫폼의 서비스 전략 수립, 기획, 프론트엔드 아키텍처 설계 및 개발',
+        description:
+          'AI 기반 진단 학습 플랫폼의 서비스 전략 수립, 기획, 프론트엔드 아키텍처 설계 및 개발',
         highlights: [
           'AI 마타수학 2026 리뉴얼 — 전체 IA 재설계 및 프론트엔드 아키텍처 개편 주도',
           'React / Next.js / TypeScript / Redux 기반 구조 개선 및 공통 컴포넌트 체계 정립',
@@ -84,75 +80,6 @@ export const resume = {
       },
     ],
   },
-
-  // ─── 주요 프로젝트 ───────────────────────────────────────────────
-  projects: [
-    {
-      id: 'ai-mata',
-      title: 'AI 마타수학',
-      company: '(주)마타에듀',
-      description:
-        'AI 진단 기반 수학 학습 플랫폼. 교사는 수업을 설계하고, 학생은 개인 맞춤 학습으로 실력을 키웁니다. 초등·중고등 전 과정을 커버하며 EBS 초등온에 납품된 서비스입니다.',
-      role: 'Lead Product Engineer (기획 + 개발)',
-      period: { start: '2023-03', end: 'present' },
-      impact: [
-        '서비스 전략 제안 및 2026 리뉴얼 구조 설계 주도',
-        'React / Next.js / TypeScript / Redux 기반 개발',
-        'EBS 초등온 납품 (2025)',
-      ],
-      tech: ['Next.js', 'React', 'TypeScript', 'Redux', 'AWS CodeCommit'],
-      image: '/images/projects/ai-mata.png',
-    },
-    {
-      id: 'paddly',
-      title: '패들리 (Paddly)',
-      company: '(주)마타에듀',
-      description:
-        '수학 모둠활동 서비스. 교사가 수업 활동을 직접 만들고 공유하는 학급 활동 플랫폼으로, 카드 뒤집기·퀴즈 등 다양한 인터랙티브 활동을 지원합니다.',
-      role: '서비스 기획 + UX 설계',
-      period: { start: '2025-01', end: 'present' },
-      impact: [
-        '서비스 전략 제안 및 모둠활동 UX 기획',
-        'Figma 기반 인터랙션 설계 및 프로토타이핑',
-        'Make(업무 자동화)를 활용한 기획 프로세스 효율화',
-      ],
-      tech: ['Figma', 'Make', 'UX 기획', 'EdTech'],
-      image: '/images/projects/paddly.png',
-    },
-    {
-      id: 'cool-hanja',
-      title: '쿨한자 (Cool-Hanja)',
-      company: '개인 프로젝트',
-      description:
-        '한자 학습 서비스. Next.js로 Front/Back-end를 직접 구축하고 Vercel에 배포. AI를 활용해 빠르게 런칭한 EdTech MVP 서비스입니다.',
-      role: 'Founder & Full-Stack Engineer',
-      period: { start: '2025-01', end: 'present' },
-      impact: [
-        '아이디어 → 기획 → 개발 → 배포까지 단독 수행',
-        'Next.js 기반 풀스택 개발 및 Vercel 배포',
-        'AI 활용으로 빠른 MVP 런칭',
-      ],
-      tech: ['Next.js', 'TypeScript', 'Vercel', 'Claude API'],
-      github: 'https://github.com/iimandoo/cool-hanja',
-      image: '/images/projects/cool-hanja.png',
-    },
-    {
-      id: 'baemin-admin',
-      title: '배민상회 Admin',
-      company: '우아한형제들',
-      description:
-        '배민상회 어드민 시스템 및 권한관리 서비스 개발. React-Query 기반 데이터 패칭 최적화와 Storybook을 통한 UI 컴포넌트 시스템을 구축했습니다.',
-      role: 'Frontend Engineer (프리랜서)',
-      period: { start: '2014-01', end: '2022-12' },
-      impact: [
-        'React-Query 기반 캐싱으로 API 호출 최적화',
-        'Storybook UI 컴포넌트 시스템 구축',
-        '대규모 데이터 환경에서의 안정성 및 유지보수성 개선',
-      ],
-      tech: ['React', 'TypeScript', 'React-Query', 'Storybook', 'Styled-Components'],
-      image: '/images/projects/baemin-admin.png',
-    },
-  ],
 
   // ─── 기술 스택 ───────────────────────────────────────────────────
   skills: {
@@ -214,6 +141,7 @@ export const resume = {
         execution:
           'React / Next.js / TypeScript / Redux 기반 구조 개선 및 공통 컴포넌트 체계 정립. 기획과 개발 간 간극을 줄이는 협업 방식을 설계했습니다.',
         tools: 'Figma (Design, Make), AI 기반 워크플로우',
+        images: ['/images/impact/mata-teacher.png', '/images/impact/mata-student.png'],
       },
       {
         id: 'mata-multiplatform',
@@ -223,6 +151,7 @@ export const resume = {
           "초등·중고등·대학 과정으로 확장되는 AI 진단 기반 학습 플랫폼의 안정적 운영과 구조 확장을 이끌었습니다. 'EBS 초등온' 납품을 통해 공교육 환경에서 요구되는 서비스 안정성과 품질 기준을 충족했습니다.",
         execution:
           '대상별 학습 UX 구조 설계 및 프론트엔드 최적화 수행. 대규모 사용 환경에서도 일관성을 유지할 수 있도록 공통 UI/컴포넌트 구조를 설계했습니다.',
+        images: ['/images/impact/mata-elementary.png', '/images/impact/mata-middle-high.png'],
       },
       {
         id: 'paddly',
@@ -232,6 +161,7 @@ export const resume = {
           '실시간 인터랙티브 학급 활동 플랫폼의 서비스 전략 수립과 UX 설계를 총괄했습니다. 교사가 직접 활동을 설계·공유할 수 있는 구조를 정의했습니다.',
         execution:
           'Figma 기반 인터랙션 설계 및 프로토타이핑. Make(업무 자동화) 도입으로 기획 산출물 생성 프로세스를 체계화했습니다.',
+        images: ['/images/impact/paddly.png'],
       },
       {
         id: 'cool-hanja',
@@ -241,6 +171,7 @@ export const resume = {
           '아이디어 단계에서 시장 검증을 목표로 기획·설계·개발·배포까지 전 과정을 단독 수행한 EdTech MVP입니다.',
         execution:
           'Next.js 기반 풀스택 구조 설계 및 Vercel 배포. AI 워크플로우를 활용해 개발 속도를 단축하고 초기 서비스 완성도를 확보했습니다.',
+        images: ['/images/impact/cool-hanja.png'],
       },
       {
         id: 'momtoring',
@@ -266,6 +197,5 @@ export const resume = {
 // ─── 타입 추출 ────────────────────────────────────────────────────
 export type Resume = typeof resume;
 export type Experience = (typeof resume.career.experiences)[number];
-export type Project = (typeof resume.projects)[number];
 export type SkillCategory = (typeof resume.skills.categories)[number];
 export type ImpactCase = (typeof resume.impact.cases)[number];

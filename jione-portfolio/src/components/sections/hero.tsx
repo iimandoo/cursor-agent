@@ -119,23 +119,18 @@ export function HeroSection() {
   return (
     <Section id="hero">
       <Inner>
-        {profile.availability.status === 'open' && (
-          <Badge>🟢 {profile.availability.message}</Badge>
-        )}
         <Name>{profile.name}</Name>
         <Title>{profile.title}</Title>
         <Subtitle>{profile.subtitle}</Subtitle>
-        <Location>📍 {profile.location}</Location>
         <Bio>{profile.bio}</Bio>
         <ButtonGroup>
-          <PrimaryButton href={`mailto:${profile.email}`}>
-            ✉️ 이메일 보내기
-          </PrimaryButton>
-          <SecondaryButton
-            href={profile.social.github}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
+          <PrimaryButton href={`mailto:${profile.email}`}>✉️ 이메일 보내기</PrimaryButton>
+          {profile.phone && (
+            <SecondaryButton href={`tel:${profile.phone}`}>
+              📞 전화하기
+            </SecondaryButton>
+          )}
+          <SecondaryButton href={profile.social.github} target="_blank" rel="noopener noreferrer">
             GitHub
           </SecondaryButton>
           {profile.social.linkedin && (
@@ -143,7 +138,7 @@ export function HeroSection() {
               href={profile.social.linkedin}
               target="_blank"
               rel="noopener noreferrer"
-            >
+            > 
               LinkedIn
             </SecondaryButton>
           )}

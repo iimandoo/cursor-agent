@@ -128,19 +128,18 @@ export function ContactSection() {
         <SectionLabel>Contact</SectionLabel>
         <SectionTitle>함께 만들어요</SectionTitle>
         <Description>
-          새로운 프로젝트, 협업, 또는 그냥 인사라도 환영합니다.
+          새로운 프로젝트, 협업도 환영합니다.
           <br />
           편하게 연락 주세요.
         </Description>
         <ButtonGroup>
-          <PrimaryButton href={`mailto:${profile.email}`}>
-            ✉️ 이메일 보내기
-          </PrimaryButton>
-          <SecondaryButton
-            href={profile.social.github}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
+          <PrimaryButton href={`mailto:${profile.email}`}>✉️ 이메일 보내기</PrimaryButton>
+          {profile.phone && (
+            <SecondaryButton href={`tel:${profile.phone}`}>
+              📞 전화하기
+            </SecondaryButton>
+          )}
+          <SecondaryButton href={profile.social.github} target="_blank" rel="noopener noreferrer">
             GitHub
           </SecondaryButton>
           {profile.social.linkedin && (
@@ -159,17 +158,12 @@ export function ContactSection() {
             <InfoLabel>이메일</InfoLabel>
             <InfoValue>{profile.email}</InfoValue>
           </InfoItem>
-          <InfoItem>
-            <InfoLabel>위치</InfoLabel>
-            <InfoValue>{profile.location}</InfoValue>
-          </InfoItem>
-          <InfoItem>
-            <InfoLabel>상태</InfoLabel>
-            <InfoValue>
-              {profile.availability.status === 'open' ? '🟢 ' : '🔴 '}
-              {profile.availability.message}
-            </InfoValue>
-          </InfoItem>
+          {profile.phone && (
+            <InfoItem>
+              <InfoLabel>연락처</InfoLabel>
+              <InfoValue>{profile.phone}</InfoValue>
+            </InfoItem>
+          )}
         </InfoRow>
       </Container>
     </Section>

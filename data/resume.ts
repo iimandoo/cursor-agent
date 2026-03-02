@@ -22,6 +22,11 @@ export const socialLinks: SocialLink[] = [
     href: "mailto:euneundh@gmail.com",
     icon: "email",
   },
+  {
+    label: "연락처",
+    href: "tel:010-7205-0408",
+    icon: "phone",
+  },
 ];
 
 export const experiences: Experience[] = [
@@ -47,7 +52,7 @@ export const experiences: Experience[] = [
   {
     company: "㈜GRETECH JAPAN",
     period: "2007.12 ~ 2011.02",
-    position: "매니저",
+    position: "PM",
     tasks: [
       "서비스/웹 기획, 서비스 운영, 고객 대응",
       "개발 (CGI, VC++/Xcode)",
@@ -95,7 +100,16 @@ export const projects: Project[] = [
       "AWS CodeCommit 기반 협업, Notion QA 관리",
       "EBS 초등온 – 마타수학 납품 (2025)",
     ],
-    tags: ["Next.js", "React", "TypeScript", "Redux", "EdTech", "AI", "기획", "PM"],
+    tags: [
+      "Next.js",
+      "React",
+      "TypeScript",
+      "Redux",
+      "EdTech",
+      "AI",
+      "기획",
+      "PM",
+    ],
     image: "/projects/AI마타_선생님.png",
     screenshots: [
       { src: "/projects/AI마타_선생님.png", alt: "선생님 대시보드" },
@@ -151,7 +165,13 @@ export const projects: Project[] = [
       "Storybook을 통한 UI 컴포넌트 시스템 구축",
       "GitLab 협업 및 Jira 기반 스프린트 운영",
     ],
-    tags: ["React", "TypeScript", "React-Query", "Storybook", "Styled-Components"],
+    tags: [
+      "React",
+      "TypeScript",
+      "React-Query",
+      "Storybook",
+      "Styled-Components",
+    ],
     image: "/projects/AI마타_선생님.png", // TODO: 배민상회 스크린샷 추가 필요
     screenshots: [],
   },
