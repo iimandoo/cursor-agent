@@ -5,7 +5,7 @@ import { resume } from '@/data/resume';
 
 const Section = styled.section`
   min-height: 100vh;
-  background: linear-gradient(135deg, #f9fafb 0%, #ffffff 100%);
+  background: linear-gradient(135deg, #f9fafb 0%, #ffffff 60%);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -21,91 +21,86 @@ const Inner = styled.div`
 const Badge = styled.span`
   display: inline-block;
   background-color: ${(props) => props.theme.colors.secondary};
-  color: ${(props) => props.theme.colors.primary};
+  color: ${(props) => props.theme.colors.secondaryForeground};
   font-size: 0.875rem;
   font-weight: 600;
-  padding: 0.375rem 0.875rem;
-  border-radius: ${(props) => props.theme.radius.xl};
+  padding: 0.375rem 1rem;
+  border-radius: 9999px;
   margin-bottom: 1.5rem;
 `;
 
-const Name = styled.h1`
-  font-size: 2.5rem;
+const Title = styled.h1`
+  font-size: 2.25rem;
   font-weight: 700;
-  letter-spacing: -0.03em;
   color: ${(props) => props.theme.colors.foreground};
-  margin-bottom: 0.75rem;
+  letter-spacing: -0.03em;
+  line-height: 1.2;
+  margin-bottom: 0.5rem;
 
   @media (min-width: 768px) {
-    font-size: 3.5rem;
+    font-size: 3rem;
   }
 `;
 
-const Title = styled.p`
-  font-size: 1.25rem;
-  font-weight: 600;
-  color: ${(props) => props.theme.colors.primary};
-  margin-bottom: 0.5rem;
-`;
-
-const Subtitle = styled.p`
+const RoleDetail = styled.p`
   font-size: 1rem;
   color: ${(props) => props.theme.colors.mutedForeground};
-  margin-bottom: 0.5rem;
+  margin-bottom: 1.5rem;
+  font-weight: 500;
 `;
 
-const Location = styled.p`
-  font-size: 0.875rem;
-  color: ${(props) => props.theme.colors.mutedForeground};
-  margin-bottom: 2rem;
-`;
-
-const Bio = styled.p`
-  font-size: 1.125rem;
+const Tagline = styled.p`
+  font-size: 1.0625rem;
   line-height: 1.7;
   color: ${(props) => props.theme.colors.secondaryForeground};
-  margin-bottom: 2.5rem;
+  margin-bottom: 1rem;
+`;
 
-  @media (min-width: 768px) {
-    font-size: 1.25rem;
-  }
+const Description = styled.p`
+  font-size: 0.9375rem;
+  line-height: 1.7;
+  color: ${(props) => props.theme.colors.mutedForeground};
+  margin-bottom: 2.5rem;
 `;
 
 const ButtonGroup = styled.div`
   display: flex;
-  gap: 1rem;
-  justify-content: center;
   flex-wrap: wrap;
+  gap: 0.75rem;
+  justify-content: center;
 `;
 
 const PrimaryButton = styled.a`
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
   background-color: ${(props) => props.theme.colors.primary};
   color: ${(props) => props.theme.colors.primaryForeground};
-  padding: 0.75rem 1.75rem;
+  padding: 0.75rem 1.5rem;
   border-radius: ${(props) => props.theme.radius.md};
   font-weight: 600;
-  font-size: 1rem;
+  font-size: 0.9375rem;
   text-decoration: none;
-  transition: all 0.2s ease;
+  transition: opacity 0.2s ease, transform 0.2s ease;
 
   &:hover {
-    opacity: 0.9;
+    opacity: 0.88;
     transform: translateY(-2px);
-    box-shadow: ${(props) => props.theme.shadows.md};
   }
 `;
 
 const SecondaryButton = styled.a`
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
   background-color: ${(props) => props.theme.colors.secondary};
-  color: ${(props) => props.theme.colors.foreground};
-  padding: 0.75rem 1.75rem;
+  color: ${(props) => props.theme.colors.secondaryForeground};
+  padding: 0.75rem 1.5rem;
   border-radius: ${(props) => props.theme.radius.md};
   font-weight: 600;
-  font-size: 1rem;
+  font-size: 0.9375rem;
   text-decoration: none;
-  transition: all 0.2s ease;
+  transition: background-color 0.2s ease, transform 0.2s ease;
 
   &:hover {
     background-color: ${(props) => props.theme.colors.border};
@@ -119,29 +114,17 @@ export function HeroSection() {
   return (
     <Section id="hero">
       <Inner>
-        <Name>{profile.name}</Name>
-        <Title>{profile.title}</Title>
-        <Subtitle>{profile.subtitle}</Subtitle>
-        <Bio>{profile.bio}</Bio>
+        <Badge>{profile.yearsOfExperience} 경력</Badge>
+        <Title>{profile.name}</Title>
+        <RoleDetail>{profile.subtitle}</RoleDetail>
+        <Tagline>{profile.tagline}</Tagline>
+        <Description>{profile.bio}</Description>
         <ButtonGroup>
-          <PrimaryButton href={`mailto:${profile.email}`}>✉️ 이메일 보내기</PrimaryButton>
-          {profile.phone && (
-            <SecondaryButton href={`tel:${profile.phone}`}>
-              📞 전화하기
-            </SecondaryButton>
-          )}
+          <PrimaryButton href="#contact">연락하기</PrimaryButton>
           <SecondaryButton href={profile.social.github} target="_blank" rel="noopener noreferrer">
             GitHub
           </SecondaryButton>
-          {profile.social.linkedin && (
-            <SecondaryButton
-              href={profile.social.linkedin}
-              target="_blank"
-              rel="noopener noreferrer"
-            > 
-              LinkedIn
-            </SecondaryButton>
-          )}
+          <SecondaryButton href="#project">프로젝트 보기</SecondaryButton>
         </ButtonGroup>
       </Inner>
     </Section>

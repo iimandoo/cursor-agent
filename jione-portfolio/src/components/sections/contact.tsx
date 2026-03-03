@@ -7,10 +7,6 @@ const Section = styled.section`
   padding: 5rem 1.5rem;
   background-color: ${(props) => props.theme.colors.muted};
   text-align: center;
-
-  @media (min-width: 768px) {
-    padding: 7rem 2rem;
-  }
 `;
 
 const Container = styled.div`
@@ -30,93 +26,69 @@ const SectionLabel = styled.p`
 const SectionTitle = styled.h2`
   font-size: 1.875rem;
   font-weight: 700;
-  letter-spacing: -0.02em;
   color: ${(props) => props.theme.colors.foreground};
+  letter-spacing: -0.02em;
   margin-bottom: 1rem;
 `;
 
-const Description = styled.p`
-  font-size: 1.0625rem;
+const SectionDesc = styled.p`
+  font-size: 1rem;
   line-height: 1.7;
-  color: ${(props) => props.theme.colors.secondaryForeground};
+  color: ${(props) => props.theme.colors.mutedForeground};
   margin-bottom: 2.5rem;
 `;
 
 const ButtonGroup = styled.div`
   display: flex;
-  gap: 1rem;
-  justify-content: center;
   flex-wrap: wrap;
-  margin-bottom: 3rem;
+  gap: 0.75rem;
+  justify-content: center;
 `;
 
-const PrimaryButton = styled.a`
-  display: inline-block;
+const ContactButton = styled.a`
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
   background-color: ${(props) => props.theme.colors.primary};
   color: ${(props) => props.theme.colors.primaryForeground};
-  padding: 0.875rem 2rem;
+  padding: 0.75rem 1.5rem;
   border-radius: ${(props) => props.theme.radius.md};
   font-weight: 600;
-  font-size: 1rem;
+  font-size: 0.9375rem;
   text-decoration: none;
-  transition: all 0.2s ease;
+  transition: opacity 0.2s ease, transform 0.2s ease;
 
   &:hover {
-    opacity: 0.9;
+    opacity: 0.88;
     transform: translateY(-2px);
-    box-shadow: ${(props) => props.theme.shadows.md};
   }
 `;
 
 const SecondaryButton = styled.a`
-  display: inline-block;
-  background-color: ${(props) => props.theme.colors.background};
-  color: ${(props) => props.theme.colors.foreground};
-  padding: 0.875rem 2rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: ${(props) => props.theme.colors.secondary};
+  color: ${(props) => props.theme.colors.secondaryForeground};
+  padding: 0.75rem 1.5rem;
   border-radius: ${(props) => props.theme.radius.md};
   font-weight: 600;
-  font-size: 1rem;
+  font-size: 0.9375rem;
   text-decoration: none;
-  border: 1px solid ${(props) => props.theme.colors.border};
-  transition: all 0.2s ease;
+  transition: background-color 0.2s ease, transform 0.2s ease;
 
   &:hover {
-    background-color: ${(props) => props.theme.colors.secondary};
+    background-color: ${(props) => props.theme.colors.border};
     transform: translateY(-2px);
   }
 `;
 
-const Divider = styled.hr`
-  border: none;
+const Footer = styled.footer`
+  margin-top: 3rem;
+  padding-top: 2rem;
   border-top: 1px solid ${(props) => props.theme.colors.border};
-  margin-bottom: 2rem;
-`;
-
-const InfoRow = styled.div`
-  display: flex;
-  justify-content: center;
-  gap: 2rem;
-  flex-wrap: wrap;
-`;
-
-const InfoItem = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.25rem;
-`;
-
-const InfoLabel = styled.span`
-  font-size: 0.75rem;
-  font-weight: 600;
+  font-size: 0.875rem;
   color: ${(props) => props.theme.colors.mutedForeground};
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-`;
-
-const InfoValue = styled.span`
-  font-size: 0.9375rem;
-  color: ${(props) => props.theme.colors.foreground};
 `;
 
 export function ContactSection() {
@@ -126,45 +98,22 @@ export function ContactSection() {
     <Section id="contact">
       <Container>
         <SectionLabel>Contact</SectionLabel>
-        <SectionTitle>함께 만들어요</SectionTitle>
-        <Description>
-          새로운 프로젝트, 협업도 환영합니다.
+        <SectionTitle>함께 일해요</SectionTitle>
+        <SectionDesc>
+          새로운 기회나 협업 제안은 언제든지 환영합니다.
           <br />
-          편하게 연락 주세요.
-        </Description>
+          이메일이나 전화로 연락해 주세요.
+        </SectionDesc>
+
         <ButtonGroup>
-          <PrimaryButton href={`mailto:${profile.email}`}>✉️ 이메일 보내기</PrimaryButton>
-          {profile.phone && (
-            <SecondaryButton href={`tel:${profile.phone}`}>
-              📞 전화하기
-            </SecondaryButton>
-          )}
+          <ContactButton href={profile.social.email}>이메일 보내기</ContactButton>
+          <SecondaryButton href={profile.social.phone}>전화 연결</SecondaryButton>
           <SecondaryButton href={profile.social.github} target="_blank" rel="noopener noreferrer">
             GitHub
           </SecondaryButton>
-          {profile.social.linkedin && (
-            <SecondaryButton
-              href={profile.social.linkedin}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              LinkedIn
-            </SecondaryButton>
-          )}
         </ButtonGroup>
-        <Divider />
-        <InfoRow>
-          <InfoItem>
-            <InfoLabel>이메일</InfoLabel>
-            <InfoValue>{profile.email}</InfoValue>
-          </InfoItem>
-          {profile.phone && (
-            <InfoItem>
-              <InfoLabel>연락처</InfoLabel>
-              <InfoValue>{profile.phone}</InfoValue>
-            </InfoItem>
-          )}
-        </InfoRow>
+
+        <Footer>© {new Date().getFullYear()} {profile.name}. All rights reserved.</Footer>
       </Container>
     </Section>
   );

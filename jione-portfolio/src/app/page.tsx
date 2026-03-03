@@ -3,8 +3,8 @@
 import styled from 'styled-components';
 import { HeroSection } from '@/components/sections/hero';
 import { AboutSection } from '@/components/sections/about';
+import { ProjectSection } from '@/components/sections/Project';
 import { ContactSection } from '@/components/sections/contact';
-import { ProjectSection } from '@/components/sections/project';
 
 const MainContainer = styled.main`
   width: 100%;

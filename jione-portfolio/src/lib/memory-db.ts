@@ -38,8 +38,4 @@ export const memoryDB = {
     });
     return stats;
   },
-  clearLogs: () => {
-    logs = [];
-    nextId = 1;
-  },
 };

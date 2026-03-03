@@ -6,10 +6,6 @@ import { resume } from '@/data/resume';
 const Section = styled.section`
   padding: 5rem 1.5rem;
   background-color: ${(props) => props.theme.colors.muted};
-
-  @media (min-width: 768px) {
-    padding: 7rem 2rem;
-  }
 `;
 
 const Container = styled.div`
@@ -29,30 +25,43 @@ const SectionLabel = styled.p`
 const SectionTitle = styled.h2`
   font-size: 1.875rem;
   font-weight: 700;
-  letter-spacing: -0.02em;
   color: ${(props) => props.theme.colors.foreground};
-  margin-bottom: 1rem;
+  letter-spacing: -0.02em;
+  margin-bottom: 0.5rem;
 `;
 
-const Summary = styled.p`
-  font-size: 1.0625rem;
-  line-height: 1.7;
-  color: ${(props) => props.theme.colors.secondaryForeground};
+const SectionDesc = styled.p`
+  font-size: 1rem;
+  color: ${(props) => props.theme.colors.mutedForeground};
   margin-bottom: 3rem;
-  max-width: 48rem;
 `;
 
-const Timeline = styled.div`
+const Grid = styled.div`
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2.5rem;
+
+  @media (min-width: 768px) {
+    grid-template-columns: 1fr 1fr;
+  }
+`;
+
+/* ─── 경력 카드 ─────────────────────────────────────────── */
+
+const CareerList = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 1rem;
 `;
 
-const Card = styled.div`
+const CareerCard = styled.div<{ $isCurrent?: boolean }>`
   background-color: ${(props) => props.theme.colors.card};
-  padding: 1.75rem;
   border-radius: ${(props) => props.theme.radius.lg};
+  padding: 1.25rem 1.5rem;
   box-shadow: ${(props) => props.theme.shadows.sm};
+  border-left: 3px solid
+    ${(props) =>
+      props.$isCurrent ? props.theme.colors.primary : props.theme.colors.border};
   transition: box-shadow 0.2s ease;
 
   &:hover {
@@ -60,110 +69,131 @@ const Card = styled.div`
   }
 `;
 
-const CardHeader = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 1rem;
-  margin-bottom: 0.5rem;
-  flex-wrap: wrap;
-`;
-
-const Company = styled.h3`
-  font-size: 1.125rem;
+const CareerCompany = styled.p`
+  font-size: 1rem;
   font-weight: 700;
   color: ${(props) => props.theme.colors.foreground};
 `;
 
-const Period = styled.span`
-  font-size: 0.8125rem;
+const CareerMeta = styled.p`
+  font-size: 0.875rem;
   color: ${(props) => props.theme.colors.mutedForeground};
-  white-space: nowrap;
+  margin-top: 0.125rem;
+  margin-bottom: 0.5rem;
 `;
 
-const Position = styled.p`
-  font-size: 0.9375rem;
-  font-weight: 500;
-  color: ${(props) => props.theme.colors.primary};
-  margin-bottom: 0.75rem;
-`;
-
-const Description = styled.p`
-  font-size: 0.9375rem;
-  color: ${(props) => props.theme.colors.secondaryForeground};
-  line-height: 1.6;
-  margin-bottom: 1rem;
-`;
-
-const Highlights = styled.ul`
+const TaskList = styled.ul`
   list-style: none;
+  padding: 0;
   display: flex;
   flex-direction: column;
-  gap: 0.4rem;
-  margin-bottom: 1rem;
+  gap: 0.25rem;
 `;
 
-const Highlight = styled.li`
+const TaskItem = styled.li`
   font-size: 0.875rem;
   color: ${(props) => props.theme.colors.secondaryForeground};
-  padding-left: 1.25rem;
+  padding-left: 1rem;
   position: relative;
 
   &::before {
-    content: '→';
+    content: '·';
     position: absolute;
-    left: 0;
-    color: ${(props) => props.theme.colors.primary};
-    font-weight: 700;
+    left: 0.25rem;
+    color: ${(props) => props.theme.colors.mutedForeground};
   }
 `;
 
-const SkillTags = styled.div`
+/* ─── 기술 스택 ─────────────────────────────────────────── */
+
+const SkillCategories = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+`;
+
+const SkillCategoryCard = styled.div`
+  background-color: ${(props) => props.theme.colors.card};
+  border-radius: ${(props) => props.theme.radius.lg};
+  padding: 1.25rem 1.5rem;
+  box-shadow: ${(props) => props.theme.shadows.sm};
+`;
+
+const CategoryName = styled.p`
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: ${(props) => props.theme.colors.foreground};
+  margin-bottom: 0.75rem;
+`;
+
+const TagList = styled.div`
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
 `;
 
 const Tag = styled.span`
-  font-size: 0.75rem;
-  font-weight: 500;
-  color: ${(props) => props.theme.colors.secondaryForeground};
   background-color: ${(props) => props.theme.colors.secondary};
+  color: ${(props) => props.theme.colors.secondaryForeground};
+  font-size: 0.8125rem;
+  font-weight: 500;
   padding: 0.25rem 0.625rem;
   border-radius: ${(props) => props.theme.radius.sm};
 `;
 
 export function AboutSection() {
-  const { career } = resume;
+  const { career, skills } = resume;
 
   return (
     <Section id="about">
       <Container>
-        <SectionLabel>Career</SectionLabel>
-        <SectionTitle>경력</SectionTitle>
-        <Summary>{career.summary}</Summary>
-        <Timeline>
-          {career.experiences.map((exp) => (
-            <Card key={exp.id}>
-              <CardHeader>
-                <Company>{exp.company}</Company>
-                <Period>{exp.period.start} ~ {exp.period.end === 'present' ? '현재' : exp.period.end}</Period>
-              </CardHeader>
-              <Position>{exp.position}</Position>
-              <Description>{exp.description}</Description>
-              <Highlights>
-                {exp.highlights.map((h, i) => (
-                  <Highlight key={i}>{h}</Highlight>
-                ))}
-              </Highlights>
-              <SkillTags>
-                {exp.skills.map((s) => (
-                  <Tag key={s}>{s}</Tag>
-                ))}
-              </SkillTags>
-            </Card>
-          ))}
-        </Timeline>
+        <SectionLabel>About</SectionLabel>
+        <SectionTitle>경력 & 기술</SectionTitle>
+        <SectionDesc>{career.summary}</SectionDesc>
+
+        <Grid>
+          {/* 경력 타임라인 */}
+          <div>
+            <CategoryName style={{ fontSize: '1rem', marginBottom: '1rem' }}>
+              경력 타임라인
+            </CategoryName>
+            <CareerList>
+              {career.experiences.map((exp) => (
+                <CareerCard key={exp.id} $isCurrent={'isCurrent' in exp && exp.isCurrent}>
+                  <CareerCompany>{exp.company}</CareerCompany>
+                  <CareerMeta>
+                    {exp.position} · {exp.period.start} ~{' '}
+                    {exp.period.end === 'present' ? '현재' : exp.period.end}
+                  </CareerMeta>
+                  <TaskList>
+                    {exp.tasks.map((task, i) => (
+                      <TaskItem key={i}>{task}</TaskItem>
+                    ))}
+                  </TaskList>
+                </CareerCard>
+              ))}
+            </CareerList>
+          </div>
+
+          {/* 기술 스택 */}
+          <div>
+            <CategoryName style={{ fontSize: '1rem', marginBottom: '1rem' }}>
+              기술 스택
+            </CategoryName>
+            <SkillCategories>
+              {skills.categories.map((cat) => (
+                <SkillCategoryCard key={cat.name}>
+                  <CategoryName>{cat.name}</CategoryName>
+                  <TagList>
+                    {cat.items.map((item) => (
+                      <Tag key={item}>{item}</Tag>
+                    ))}
+                  </TagList>
+                </SkillCategoryCard>
+              ))}
+            </SkillCategories>
+          </div>
+        </Grid>
       </Container>
     </Section>
   );

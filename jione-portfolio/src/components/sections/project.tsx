@@ -5,13 +5,11 @@ import { useState, useEffect, useCallback } from 'react';
 import styled, { keyframes } from 'styled-components';
 import { resume } from '@/data/resume';
 
+/* ─── 섹션 레이아웃 ──────────────────────────────────────── */
+
 const Section = styled.section`
   padding: 5rem 1.5rem;
-  background-color: ${(props) => props.theme.colors.muted};
-
-  @media (min-width: 768px) {
-    padding: 7rem 2rem;
-  }
+  background-color: ${(props) => props.theme.colors.background};
 `;
 
 const Container = styled.div`
@@ -31,24 +29,26 @@ const SectionLabel = styled.p`
 const SectionTitle = styled.h2`
   font-size: 1.875rem;
   font-weight: 700;
-  letter-spacing: -0.02em;
   color: ${(props) => props.theme.colors.foreground};
-  margin-bottom: 1rem;
+  letter-spacing: -0.02em;
+  margin-bottom: 0.75rem;
 `;
 
 const Intro = styled.p`
   font-size: 1.0625rem;
   line-height: 1.7;
   color: ${(props) => props.theme.colors.secondaryForeground};
-  margin-bottom: 3.5rem;
+  margin-bottom: 3rem;
   max-width: 48rem;
 `;
 
-const CaseList = styled.div`
+const CardList = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 2.5rem;
+  gap: 1.5rem;
 `;
+
+/* ─── 프로젝트 카드 ──────────────────────────────────────── */
 
 const CaseCard = styled.div<{ $hasImages: boolean }>`
   background-color: ${(props) => props.theme.colors.card};
@@ -71,75 +71,120 @@ const CaseCard = styled.div<{ $hasImages: boolean }>`
 const CardBody = styled.div`
   padding: 2rem;
   flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 `;
 
 const CardMeta = styled.div`
   display: flex;
   align-items: center;
-  gap: 0.625rem;
-  margin-bottom: 0.875rem;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
   flex-wrap: wrap;
 `;
 
-const CompanyTag = styled.span`
-  font-size: 0.75rem;
+const CompanyBadge = styled.span`
+  font-size: 0.8125rem;
   font-weight: 600;
   color: ${(props) => props.theme.colors.primary};
-  background-color: ${(props) => props.theme.colors.secondary};
-  padding: 0.2rem 0.625rem;
-  border-radius: ${(props) => props.theme.radius.sm};
+  background-color: #eff6ff;
+  padding: 0.1875rem 0.625rem;
+  border-radius: 9999px;
 `;
 
-const CaseTitle = styled.h3`
-  font-size: 1.125rem;
+const YearBadge = styled.span`
+  font-size: 0.8125rem;
+  color: ${(props) => props.theme.colors.mutedForeground};
+`;
+
+const RoleBadge = styled.span`
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: ${(props) => props.theme.colors.secondaryForeground};
+  background-color: ${(props) => props.theme.colors.secondary};
+  padding: 0.1875rem 0.625rem;
+  border-radius: 9999px;
+`;
+
+const CardTitle = styled.h3`
+  font-size: 1.25rem;
   font-weight: 700;
   color: ${(props) => props.theme.colors.foreground};
-  margin-bottom: 0.75rem;
   letter-spacing: -0.01em;
+  margin-bottom: 0.75rem;
 `;
 
-const ProjectText = styled.p`
+const CardDesc = styled.p`
   font-size: 0.9375rem;
   line-height: 1.7;
   color: ${(props) => props.theme.colors.secondaryForeground};
-  margin-bottom: 0.625rem;
+  margin-bottom: 1.25rem;
 `;
 
-const ExecutionText = styled.p`
+const HighlightList = styled.ul`
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+  margin-bottom: 1.25rem;
+`;
+
+const HighlightItem = styled.li`
   font-size: 0.875rem;
-  line-height: 1.6;
-  color: ${(props) => props.theme.colors.mutedForeground};
-  margin-bottom: 0.625rem;
+  color: ${(props) => props.theme.colors.secondaryForeground};
+  padding-left: 1.125rem;
+  position: relative;
+
+  &::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: ${(props) => props.theme.colors.primary};
+    font-weight: 700;
+    font-size: 0.75rem;
+    top: 0.125rem;
+  }
 `;
 
-const ToolsText = styled.p`
-  font-size: 0.8125rem;
-  color: ${(props) => props.theme.colors.mutedForeground};
-  font-style: italic;
+const TagList = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.375rem;
 `;
+
+const Tag = styled.span`
+  background-color: ${(props) => props.theme.colors.secondary};
+  color: ${(props) => props.theme.colors.secondaryForeground};
+  font-size: 0.75rem;
+  font-weight: 500;
+  padding: 0.1875rem 0.5rem;
+  border-radius: ${(props) => props.theme.radius.xs};
+`;
+
+/* ─── 이미지 영역 ────────────────────────────────────────── */
 
 const ImageSide = styled.div`
   display: flex;
   flex-direction: column;
   border-top: 1px solid ${(props) => props.theme.colors.border};
+  min-height: 240px;
 
   @media (min-width: 768px) {
     border-top: none;
     border-left: 1px solid ${(props) => props.theme.colors.border};
     flex: 0 0 45%;
+    min-height: unset;
   }
 `;
 
 const ImageWrapper = styled.div`
   position: relative;
   flex: 1;
-  min-height: 200px;
+  min-height: 240px;
   background-color: ${(props) => props.theme.colors.secondary};
   cursor: zoom-in;
-
-  & + & {
-    border-top: 1px solid ${(props) => props.theme.colors.border};
-  }
 
   &:hover::after {
     content: '🔍';
@@ -153,7 +198,95 @@ const ImageWrapper = styled.div`
   }
 `;
 
-// ─── 모달 ──────────────────────────────────────────────────────────
+/* ─── 슬라이더 (이미지 2장 이상) ────────────────────────── */
+
+const SliderContainer = styled.div`
+  position: relative;
+  overflow: hidden;
+  flex: 1;
+  min-height: 240px;
+`;
+
+const SliderTrack = styled.div<{ $index: number }>`
+  display: flex;
+  width: 100%;
+  height: 100%;
+  transform: translateX(${({ $index }) => -$index * 100}%);
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+`;
+
+const Slide = styled.div`
+  position: relative;
+  flex: 0 0 100%;
+  min-height: 240px;
+  background-color: ${(props) => props.theme.colors.secondary};
+  cursor: zoom-in;
+
+  &:hover::after {
+    content: '🔍';
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(0, 0, 0, 0.25);
+    font-size: 2rem;
+  }
+`;
+
+const SlideNavButton = styled.button`
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+  background-color: rgba(0, 0, 0, 0.45);
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 2rem;
+  height: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 1.25rem;
+  line-height: 1;
+  transition: background-color 0.15s ease;
+
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.7);
+  }
+  &[data-dir='prev'] {
+    left: 0.5rem;
+  }
+  &[data-dir='next'] {
+    right: 0.5rem;
+  }
+`;
+
+const SliderDots = styled.div`
+  position: absolute;
+  bottom: 0.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 0.375rem;
+  z-index: 10;
+`;
+
+const SliderDot = styled.button<{ $active: boolean }>`
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  background-color: ${({ $active }) =>
+    $active ? 'rgba(255,255,255,1)' : 'rgba(255,255,255,0.45)'};
+  transition: background-color 0.15s ease;
+`;
+
+/* ─── 모달 ───────────────────────────────────────────────── */
 
 const fadeIn = keyframes`
   from { opacity: 0; }
@@ -212,7 +345,7 @@ const ModalImageWrapper = styled.div`
   box-shadow: 0 32px 80px rgba(0, 0, 0, 0.6);
 `;
 
-// ─── 컴포넌트 ──────────────────────────────────────────────────────
+/* ─── 컴포넌트 ───────────────────────────────────────────── */
 
 interface ModalState {
   src: string;
@@ -222,8 +355,17 @@ interface ModalState {
 export function ProjectSection() {
   const { Project } = resume;
   const [modal, setModal] = useState<ModalState | null>(null);
+  const [slideIndices, setSlideIndices] = useState<Record<string, number>>({});
 
   const closeModal = useCallback(() => setModal(null), []);
+  const getIdx = (id: string) => slideIndices[id] ?? 0;
+
+  const goSlide = useCallback((id: string, total: number, dir: 1 | -1) => {
+    setSlideIndices((prev) => ({
+      ...prev,
+      [id]: ((prev[id] ?? 0) + dir + total) % total,
+    }));
+  }, []);
 
   useEffect(() => {
     if (!modal) return;
@@ -240,52 +382,139 @@ export function ProjectSection() {
 
   return (
     <>
-      <Section id="Project">
+      <Section id="project">
         <Container>
-          <SectionLabel>Project</SectionLabel>
+          <SectionLabel>Projects</SectionLabel>
           <SectionTitle>프로젝트</SectionTitle>
           <Intro>{Project.intro}</Intro>
-          <CaseList>
+
+          <CardList>
             {Project.cases.map((c) => {
-              const images = 'images' in c ? (c.images as readonly string[]) : [];
+              const images = ('images' in c ? c.images : []) as readonly string[];
               return (
                 <CaseCard key={c.id} $hasImages={images.length > 0}>
+                  {/* 왼쪽: 텍스트 */}
                   <CardBody>
                     <CardMeta>
-                      <CompanyTag>{c.company}</CompanyTag>
+                      {'company' in c && c.company && (
+                        <CompanyBadge>{c.company}</CompanyBadge>
+                      )}
+                      {'year' in c && c.year && <YearBadge>{c.year}</YearBadge>}
+                      {'role' in c && c.role && <RoleBadge>{c.role}</RoleBadge>}
                     </CardMeta>
-                    <CaseTitle>{c.title}</CaseTitle>
-                    <ProjectText>{c.Project}</ProjectText>
-                    <ExecutionText>{c.execution}</ExecutionText>
-                    {'tools' in c && c.tools && <ToolsText>Tools: {c.tools}</ToolsText>}
+                    <CardTitle>{c.title}</CardTitle>
+                    {'description' in c && c.description && (
+                      <CardDesc>{c.description}</CardDesc>
+                    )}
+                    {'highlights' in c && c.highlights && (
+                      <HighlightList>
+                        {(c.highlights as readonly string[]).map((h, i) => (
+                          <HighlightItem key={i}>{h}</HighlightItem>
+                        ))}
+                      </HighlightList>
+                    )}
+                    {'tags' in c && c.tags && (
+                      <TagList>
+                        {(c.tags as readonly string[]).map((tag) => (
+                          <Tag key={tag}>{tag}</Tag>
+                        ))}
+                      </TagList>
+                    )}
                   </CardBody>
-                  {images.length > 0 && (
+
+                  {/* 이미지 1장 — 단일 표시 */}
+                  {images.length === 1 && (
                     <ImageSide>
-                      {images.map((src) => (
-                        <ImageWrapper
-                          key={src}
-                          onClick={() => setModal({ src, alt: c.title })}
-                          role="button"
-                          aria-label={`${c.title} 이미지 크게 보기`}
+                      <ImageWrapper
+                        onClick={() => setModal({ src: images[0], alt: c.title })}
+                        role="button"
+                        aria-label={`${c.title} 이미지 크게 보기`}
+                      >
+                        <Image
+                          src={images[0]}
+                          alt={c.title}
+                          fill
+                          style={{ objectFit: 'cover' }}
+                          sizes="(max-width: 768px) 100vw, 45vw"
+                        />
+                      </ImageWrapper>
+                    </ImageSide>
+                  )}
+
+                  {/* 이미지 2장 이상 — 슬라이더 */}
+                  {images.length >= 2 && (
+                    <ImageSide>
+                      <SliderContainer>
+                        <SliderTrack $index={getIdx(c.id)}>
+                          {images.map((src, i) => (
+                            <Slide
+                              key={src}
+                              onClick={() =>
+                                setModal({ src, alt: `${c.title} ${i + 1}` })
+                              }
+                              role="button"
+                              aria-label={`${c.title} 이미지 ${i + 1} 크게 보기`}
+                            >
+                              <Image
+                                src={src}
+                                alt={`${c.title} ${i + 1}`}
+                                fill
+                                style={{ objectFit: 'cover' }}
+                                sizes="(max-width: 768px) 100vw, 45vw"
+                              />
+                            </Slide>
+                          ))}
+                        </SliderTrack>
+
+                        <SlideNavButton
+                          data-dir="prev"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            goSlide(c.id, images.length, -1);
+                          }}
+                          aria-label="이전 이미지"
                         >
-                          <Image
-                            src={src}
-                            alt={c.title}
-                            fill
-                            style={{ objectFit: 'cover' }}
-                            sizes="(max-width: 768px) 100vw, 45vw"
-                          />
-                        </ImageWrapper>
-                      ))}
+                          ‹
+                        </SlideNavButton>
+
+                        <SlideNavButton
+                          data-dir="next"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            goSlide(c.id, images.length, 1);
+                          }}
+                          aria-label="다음 이미지"
+                        >
+                          ›
+                        </SlideNavButton>
+
+                        <SliderDots>
+                          {images.map((_, i) => (
+                            <SliderDot
+                              key={i}
+                              $active={getIdx(c.id) === i}
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setSlideIndices((prev) => ({
+                                  ...prev,
+                                  [c.id]: i,
+                                }));
+                              }}
+                              aria-label={`이미지 ${i + 1}로 이동`}
+                            />
+                          ))}
+                        </SliderDots>
+                      </SliderContainer>
                     </ImageSide>
                   )}
                 </CaseCard>
               );
             })}
-          </CaseList>
+          </CardList>
         </Container>
       </Section>
 
+      {/* 이미지 모달 */}
       {modal && (
         <ModalOverlay onClick={closeModal}>
           <ModalContent onClick={(e) => e.stopPropagation()}>
