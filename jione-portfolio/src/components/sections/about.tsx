@@ -1,6 +1,7 @@
 'use client';
 
 import styled from 'styled-components';
+import { motion, type Variants } from 'framer-motion';
 import { resume } from '@/data/resume';
 
 const Section = styled.section`
@@ -141,15 +142,26 @@ const Tag = styled.span`
   border-radius: ${(props) => props.theme.radius.sm};
 `;
 
+const fadeUp: Variants = {
+  hidden: { opacity: 0, y: 24 },
+  visible: (i: number = 0) => ({
+    opacity: 1,
+    y: 0,
+    transition: { delay: i * 0.08, duration: 0.5, ease: 'easeOut' },
+  }),
+};
+
 export function AboutSection() {
   const { career, skills } = resume;
 
   return (
     <Section id="about">
       <Container>
-        <SectionLabel>About</SectionLabel>
-        <SectionTitle>경력 & 기술</SectionTitle>
-        <SectionDesc>{career.summary}</SectionDesc>
+        <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp}>
+          <SectionLabel>About</SectionLabel>
+          <SectionTitle>경력 & 기술</SectionTitle>
+          <SectionDesc>{career.summary}</SectionDesc>
+        </motion.div>
 
         <Grid>
           {/* 경력 타임라인 */}
@@ -158,8 +170,9 @@ export function AboutSection() {
               경력 타임라인
             </CategoryName>
             <CareerList>
-              {career.experiences.map((exp) => (
-                <CareerCard key={exp.id} $isCurrent={'isCurrent' in exp && exp.isCurrent}>
+              {career.experiences.map((exp, i) => (
+                <motion.div key={exp.id} custom={i} initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp}>
+                <CareerCard $isCurrent={'isCurrent' in exp && exp.isCurrent}>
                   <CareerCompany>{exp.company}</CareerCompany>
                   <CareerMeta>
                     {exp.position} · {exp.period.start} ~{' '}
@@ -171,6 +184,7 @@ export function AboutSection() {
                     ))}
                   </TaskList>
                 </CareerCard>
+                </motion.div>
               ))}
             </CareerList>
           </div>

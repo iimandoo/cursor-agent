@@ -1,6 +1,7 @@
 'use client';
 
 import styled from 'styled-components';
+import { motion } from 'framer-motion';
 import { resume } from '@/data/resume';
 
 const Section = styled.section`
@@ -38,39 +39,42 @@ const SectionDesc = styled.p`
   margin-bottom: 2.5rem;
 `;
 
-const ButtonGroup = styled.div`
+const ContactInfoList = styled.div`
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
   gap: 0.75rem;
-  justify-content: center;
+  align-items: center;
+  margin-bottom: 2rem;
 `;
 
-const ContactButton = styled.a`
+const ContactInfoItem = styled.a`
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  background-color: ${(props) => props.theme.colors.primary};
-  color: ${(props) => props.theme.colors.primaryForeground};
-  padding: 0.75rem 1.5rem;
-  border-radius: ${(props) => props.theme.radius.md};
-  font-weight: 600;
-  font-size: 0.9375rem;
+  font-size: 1rem;
+  color: ${(props) => props.theme.colors.foreground};
   text-decoration: none;
-  transition: opacity 0.2s ease, transform 0.2s ease;
+  font-weight: 500;
 
   &:hover {
-    opacity: 0.88;
-    transform: translateY(-2px);
+    color: ${(props) => props.theme.colors.primary};
   }
 `;
 
-const SecondaryButton = styled.a`
+const ContactLabel = styled.span`
+  font-size: 0.875rem;
+  color: ${(props) => props.theme.colors.mutedForeground};
+  min-width: 3rem;
+  text-align: right;
+`;
+
+const GithubButton = styled.a`
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
   background-color: ${(props) => props.theme.colors.secondary};
   color: ${(props) => props.theme.colors.secondaryForeground};
-  padding: 0.75rem 1.5rem;
+  padding: 0.625rem 1.25rem;
   border-radius: ${(props) => props.theme.radius.md};
   font-weight: 600;
   font-size: 0.9375rem;
@@ -97,6 +101,7 @@ export function ContactSection() {
   return (
     <Section id="contact">
       <Container>
+      <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, ease: 'easeOut' }}>
         <SectionLabel>Contact</SectionLabel>
         <SectionTitle>함께 일해요</SectionTitle>
         <SectionDesc>
@@ -105,15 +110,22 @@ export function ContactSection() {
           이메일이나 전화로 연락해 주세요.
         </SectionDesc>
 
-        <ButtonGroup>
-          <ContactButton href={profile.social.email}>이메일 보내기</ContactButton>
-          <SecondaryButton href={profile.social.phone}>전화 연결</SecondaryButton>
-          <SecondaryButton href={profile.social.github} target="_blank" rel="noopener noreferrer">
-            GitHub
-          </SecondaryButton>
-        </ButtonGroup>
+        <ContactInfoList>
+          <ContactInfoItem href={profile.social.email}>
+            <ContactLabel>이메일</ContactLabel>
+            {profile.email}
+          </ContactInfoItem>
+          <ContactInfoItem href={profile.social.phone}>
+            <ContactLabel>전화</ContactLabel>
+            {profile.phone}
+          </ContactInfoItem>
+        </ContactInfoList>
+        <GithubButton href={profile.social.github} target="_blank" rel="noopener noreferrer">
+          GitHub
+        </GithubButton>
 
         <Footer>© {new Date().getFullYear()} {profile.name}. All rights reserved.</Footer>
+      </motion.div>
       </Container>
     </Section>
   );

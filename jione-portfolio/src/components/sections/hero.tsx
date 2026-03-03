@@ -1,6 +1,7 @@
 'use client';
 
 import styled from 'styled-components';
+import { motion, type Variants } from 'framer-motion';
 import { resume } from '@/data/resume';
 
 const Section = styled.section`
@@ -16,17 +17,6 @@ const Inner = styled.div`
   max-width: 48rem;
   width: 100%;
   text-align: center;
-`;
-
-const Badge = styled.span`
-  display: inline-block;
-  background-color: ${(props) => props.theme.colors.secondary};
-  color: ${(props) => props.theme.colors.secondaryForeground};
-  font-size: 0.875rem;
-  font-weight: 600;
-  padding: 0.375rem 1rem;
-  border-radius: 9999px;
-  margin-bottom: 1.5rem;
 `;
 
 const Title = styled.h1`
@@ -60,53 +50,16 @@ const Description = styled.p`
   font-size: 0.9375rem;
   line-height: 1.7;
   color: ${(props) => props.theme.colors.mutedForeground};
-  margin-bottom: 2.5rem;
 `;
 
-const ButtonGroup = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.75rem;
-  justify-content: center;
-`;
-
-const PrimaryButton = styled.a`
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  background-color: ${(props) => props.theme.colors.primary};
-  color: ${(props) => props.theme.colors.primaryForeground};
-  padding: 0.75rem 1.5rem;
-  border-radius: ${(props) => props.theme.radius.md};
-  font-weight: 600;
-  font-size: 0.9375rem;
-  text-decoration: none;
-  transition: opacity 0.2s ease, transform 0.2s ease;
-
-  &:hover {
-    opacity: 0.88;
-    transform: translateY(-2px);
-  }
-`;
-
-const SecondaryButton = styled.a`
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  background-color: ${(props) => props.theme.colors.secondary};
-  color: ${(props) => props.theme.colors.secondaryForeground};
-  padding: 0.75rem 1.5rem;
-  border-radius: ${(props) => props.theme.radius.md};
-  font-weight: 600;
-  font-size: 0.9375rem;
-  text-decoration: none;
-  transition: background-color 0.2s ease, transform 0.2s ease;
-
-  &:hover {
-    background-color: ${(props) => props.theme.colors.border};
-    transform: translateY(-2px);
-  }
-`;
+const itemVariants: Variants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: (i: number) => ({
+    opacity: 1,
+    y: 0,
+    transition: { delay: i * 0.1, duration: 0.5, ease: 'easeOut' },
+  }),
+};
 
 export function HeroSection() {
   const { profile } = resume;
@@ -114,18 +67,18 @@ export function HeroSection() {
   return (
     <Section id="hero">
       <Inner>
-        <Badge>{profile.yearsOfExperience} 경력</Badge>
-        <Title>{profile.name}</Title>
-        <RoleDetail>{profile.subtitle}</RoleDetail>
-        <Tagline>{profile.tagline}</Tagline>
-        <Description>{profile.bio}</Description>
-        <ButtonGroup>
-          <PrimaryButton href="#contact">연락하기</PrimaryButton>
-          <SecondaryButton href={profile.social.github} target="_blank" rel="noopener noreferrer">
-            GitHub
-          </SecondaryButton>
-          <SecondaryButton href="#project">프로젝트 보기</SecondaryButton>
-        </ButtonGroup>
+        <motion.div custom={0} initial="hidden" animate="visible" variants={itemVariants}>
+          <Title>{profile.name}</Title>
+        </motion.div>
+        <motion.div custom={1} initial="hidden" animate="visible" variants={itemVariants}>
+          <RoleDetail>{profile.subtitle}</RoleDetail>
+        </motion.div>
+        <motion.div custom={2} initial="hidden" animate="visible" variants={itemVariants}>
+          <Tagline>{profile.tagline}</Tagline>
+        </motion.div>
+        <motion.div custom={3} initial="hidden" animate="visible" variants={itemVariants}>
+          <Description>{profile.bio}</Description>
+        </motion.div>
       </Inner>
     </Section>
   );

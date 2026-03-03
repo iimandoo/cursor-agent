@@ -5,7 +5,7 @@ export const resume = {
   meta: {
     siteTitle: '이지혜 | Full-Side Product Engineer',
     siteDescription:
-      'AI 도구와 자동화 프로세스를 적극 활용하여 개발 생산성을 극대화하며, 사용자 중심의 서비스 구조 개선에 강점이 있습니다. 경력 20년 이상의 Full-Side Engineer.',
+      'AI 도구와 자동화 프로세스를 적극 활용하여 개발 생산성을 극대화하며, 사용자 중심의 서비스 구조 개선에 강점이 있습니다. 경력 15년 이상의 Full-Side Engineer.',
     siteUrl: 'https://jione-portfolio.vercel.app',
     ogImage: '/images/og-image.jpg',
     author: '이지혜',
@@ -33,7 +33,6 @@ export const resume = {
     tagline:
       '기획의 의도를 기술 명세로 전환하고, 디자인과 개발의 경계를 허물어 비즈니스 가치를 제품으로 빠르게 구현하는 Full-Side 엔지니어입니다.',
     bio: 'AI 도구와 자동화 프로세스를 적극 활용하여 개발 생산성을 극대화하며, 사용자 중심의 서비스 구조 개선에 강점이 있습니다.',
-    yearsOfExperience: '20년 이상',
     email: 'euneundh@gmail.com',
     phone: '010-7205-0408',
     social: {
@@ -45,7 +44,7 @@ export const resume = {
 
   // ─── 경력 타임라인 ───────────────────────────────────────────────
   career: {
-    summary: '기획·설계·개발을 아우르는 20년 이상의 풀사이드 엔지니어링 경험.',
+    summary: '기획·설계·개발을 아우르는 풀사이드 엔지니어링 경험.',
     experiences: [
       {
         id: 'mata-edu',

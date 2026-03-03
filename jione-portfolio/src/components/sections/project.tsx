@@ -1,8 +1,9 @@
 'use client';
 
 import Image from 'next/image';
-import { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import styled, { keyframes } from 'styled-components';
+import { motion, type Variants } from 'framer-motion';
 import { resume } from '@/data/resume';
 
 /* ─── 섹션 레이아웃 ──────────────────────────────────────── */
@@ -184,17 +185,13 @@ const ImageWrapper = styled.div`
   flex: 1;
   min-height: 240px;
   background-color: ${(props) => props.theme.colors.secondary};
-  cursor: zoom-in;
 
   &:hover::after {
-    content: '🔍';
+    content: '';
     position: absolute;
     inset: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: rgba(0, 0, 0, 0.25);
-    font-size: 2rem;
+    background-color: rgba(0, 0, 0, 0.08);
+    transition: background-color 0.2s ease;
   }
 `;
 
@@ -220,17 +217,13 @@ const Slide = styled.div`
   flex: 0 0 100%;
   min-height: 240px;
   background-color: ${(props) => props.theme.colors.secondary};
-  cursor: zoom-in;
 
   &:hover::after {
-    content: '🔍';
+    content: '';
     position: absolute;
     inset: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: rgba(0, 0, 0, 0.25);
-    font-size: 2rem;
+    background-color: rgba(0, 0, 0, 0.08);
+    transition: background-color 0.2s ease;
   }
 `;
 
@@ -345,6 +338,22 @@ const ModalImageWrapper = styled.div`
   box-shadow: 0 32px 80px rgba(0, 0, 0, 0.6);
 `;
 
+/* ─── 애니메이션 variants ────────────────────────────────── */
+
+const cardVariants: Variants = {
+  hidden: { opacity: 0, y: 32 },
+  visible: (i: number) => ({
+    opacity: 1,
+    y: 0,
+    transition: { delay: i * 0.12, duration: 0.5, ease: [0.16, 1, 0.3, 1] },
+  }),
+};
+
+const headerVariants: Variants = {
+  hidden: { opacity: 0, y: 16 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: 'easeOut' } },
+};
+
 /* ─── 컴포넌트 ───────────────────────────────────────────── */
 
 interface ModalState {
@@ -384,15 +393,30 @@ export function ProjectSection() {
     <>
       <Section id="project">
         <Container>
-          <SectionLabel>Projects</SectionLabel>
-          <SectionTitle>프로젝트</SectionTitle>
-          <Intro>{Project.intro}</Intro>
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={headerVariants}
+          >
+            <SectionLabel>Projects</SectionLabel>
+            <SectionTitle>프로젝트</SectionTitle>
+            <Intro>{Project.intro}</Intro>
+          </motion.div>
 
           <CardList>
-            {Project.cases.map((c) => {
+            {Project.cases.map((c, idx) => {
               const images = ('images' in c ? c.images : []) as readonly string[];
               return (
-                <CaseCard key={c.id} $hasImages={images.length > 0}>
+                <motion.div
+                  key={c.id}
+                  custom={idx}
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: true }}
+                  variants={cardVariants}
+                >
+                <CaseCard $hasImages={images.length > 0}>
                   {/* 왼쪽: 텍스트 */}
                   <CardBody>
                     <CardMeta>
@@ -468,7 +492,7 @@ export function ProjectSection() {
 
                         <SlideNavButton
                           data-dir="prev"
-                          onClick={(e) => {
+                          onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
                             e.stopPropagation();
                             goSlide(c.id, images.length, -1);
                           }}
@@ -479,7 +503,7 @@ export function ProjectSection() {
 
                         <SlideNavButton
                           data-dir="next"
-                          onClick={(e) => {
+                          onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
                             e.stopPropagation();
                             goSlide(c.id, images.length, 1);
                           }}
@@ -493,7 +517,7 @@ export function ProjectSection() {
                             <SliderDot
                               key={i}
                               $active={getIdx(c.id) === i}
-                              onClick={(e) => {
+                              onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
                                 e.stopPropagation();
                                 setSlideIndices((prev) => ({
                                   ...prev,
@@ -508,6 +532,7 @@ export function ProjectSection() {
                     </ImageSide>
                   )}
                 </CaseCard>
+                </motion.div>
               );
             })}
           </CardList>
@@ -517,7 +542,7 @@ export function ProjectSection() {
       {/* 이미지 모달 */}
       {modal && (
         <ModalOverlay onClick={closeModal}>
-          <ModalContent onClick={(e) => e.stopPropagation()}>
+          <ModalContent onClick={(e: React.MouseEvent<HTMLDivElement>) => e.stopPropagation()}>
             <CloseButton onClick={closeModal} aria-label="닫기">
               ×
             </CloseButton>

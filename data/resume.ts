@@ -8,7 +8,6 @@ export const personal = {
     "기획의 의도를 기술 명세로 전환하고, 디자인과 개발의 경계를 허물어 비즈니스 가치를 제품으로 빠르게 구현하는 Full-Side 엔지니어입니다.",
   description:
     "AI 도구와 자동화 프로세스를 적극 활용하여 개발 생산성을 극대화하며, 사용자 중심의 서비스 구조 개선에 강점이 있습니다.",
-  yearsOfExperience: "20년 이상",
 };
 
 export const socialLinks: SocialLink[] = [
