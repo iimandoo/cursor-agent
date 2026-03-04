@@ -38,3 +38,60 @@ input,
 textarea {
   font-family: inherit;
 }
+
+/* theme switcher container */
+.theme-switcher-container {
+  position: fixed;
+  top: 1.5rem;
+  right: 1.5rem;
+  z-index: 1000;
+}
+
+/* theme switcher widget */
+.theme-switcher {
+  display: flex;
+  gap: 0.5rem;
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(8px);
+  padding: 0.5rem;
+  border-radius: 0.75rem;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.theme-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  background: transparent;
+  color: #666;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: 1px solid transparent;
+}
+
+.theme-btn:hover {
+  background: rgba(0, 0, 0, 0.04);
+  color: #333;
+}
+
+.theme-btn.active {
+  background: linear-gradient(135deg, #3182F6 0%, #2563EB 100%);
+  color: white;
+  box-shadow: 0 2px 8px rgba(49, 130, 246, 0.3);
+  border-color: #3182F6;
+}
+
+.theme-icon {
+  font-size: 1.25rem;
+}
+
+.theme-label {
+  font-weight: 600;
+}
+
+

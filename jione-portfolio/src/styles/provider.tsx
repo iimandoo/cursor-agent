@@ -1,13 +1,42 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { createContext, useContext, useEffect, useState } from 'react';
 import { useServerInsertedHTML } from 'next/navigation';
 import { ServerStyleSheet, StyleSheetManager, ThemeProvider } from 'styled-components';
-import { theme } from './theme';
+import { themes, ThemeName } from './theme';
+
+// Theme 옵션 타입 (토스/카카오/컬리)
+type ThemeOption = ThemeName;
+
+interface ThemeContextType {
+  option: ThemeOption;
+  setOption: (opt: ThemeOption) => void;
+}
+
+const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
+
+export function useTheme() {
+  const ctx = useContext(ThemeContext);
+  if (!ctx) throw new Error('useTheme must be used within ThemeContext');
+  return ctx;
+}
 
 // SSR 스타일 주입 (FOUC 방지) — Next.js App Router + styled-components v6 필수
 export function StyleProvider({ children }: { children: React.ReactNode }) {
   const [styledComponentsStyleSheet] = useState(() => new ServerStyleSheet());
+
+  // 선택된 테마를 로컬 스토리지에 저장해서 새로고침 후에도 유지
+  const [option, setOption] = useState<ThemeOption>(() => {
+    if (typeof window === 'undefined') return 'toss';
+    const saved = localStorage.getItem('themeOption');
+    return (saved && (saved === 'toss' || saved === 'kakao' || saved === 'kurly') ? saved : 'toss') as ThemeOption;
+  });
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('themeOption', option);
+    }
+  }, [option]);
 
   useServerInsertedHTML(() => {
     const styles = styledComponentsStyleSheet.getStyleElement();
@@ -15,13 +44,24 @@ export function StyleProvider({ children }: { children: React.ReactNode }) {
     return <>{styles}</>;
   });
 
-  if (typeof window !== 'undefined') {
-    return <ThemeProvider theme={theme}>{children}</ThemeProvider>;
-  }
+  const renderWithTheme = (theme: typeof themes.toss, child: React.ReactNode) => (
+    <ThemeProvider theme={theme}>{child}</ThemeProvider>
+  );
+
+  const content = renderWithTheme(themes[option], children);
+
+  const providerTree =
+    typeof window !== 'undefined' ? (
+      content
+    ) : (
+      <StyleSheetManager sheet={styledComponentsStyleSheet.instance}>
+        {content}
+      </StyleSheetManager>
+    );
 
   return (
-    <StyleSheetManager sheet={styledComponentsStyleSheet.instance}>
-      <ThemeProvider theme={theme}>{children}</ThemeProvider>
-    </StyleSheetManager>
+    <ThemeContext.Provider value={{ option, setOption }}>
+      {providerTree}
+    </ThemeContext.Provider>
   );
 }

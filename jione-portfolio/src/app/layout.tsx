@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import '@/styles/globals.css';
 import { StyleProvider } from '@/styles/provider';
 import { resume } from '@/data/resume';
+import { ThemeSwitcher } from '@/components/ui/ThemeSwitcher';
 
 export const metadata: Metadata = {
   title: `${resume.profile.name} 포트폴리오`,
@@ -23,7 +24,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
       </head>
       <body>
-        <StyleProvider>{children}</StyleProvider>
+        <StyleProvider>
+          <ThemeSwitcher />
+          {children}
+        </StyleProvider>
       </body>
     </html>
   );

@@ -3,7 +3,7 @@
 import styled from 'styled-components';
 import { HeroSection } from '@/components/sections/hero';
 import { AboutSection } from '@/components/sections/about';
-import { ProjectSection } from '@/components/sections/Project';
+import { ProjectSection } from '@/components/sections/project';
 import { ContactSection } from '@/components/sections/contact';
 
 const MainContainer = styled.main`
