@@ -148,8 +148,7 @@ const SlideNavButton = styled.button`
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  font-size: 1.25rem;
-  line-height: 1;
+  font-size: 20px;
   transition: background-color 0.15s ease;
 
   &:hover { background-color: rgba(0, 0, 0, 0.7); }
@@ -229,11 +228,14 @@ const CloseButton = styled.button`
   background: none;
   border: none;
   color: rgba(255, 255, 255, 0.8);
-  font-size: 1.75rem;
-  line-height: 1;
+  font-size: 24px;
   padding: 0.25rem 0.5rem;
   cursor: pointer;
   &:hover { color: #ffffff; }
+`;
+
+const ModalSlider = styled.div`
+  position: relative;
 `;
 
 const ModalImageWrapper = styled.div`
@@ -242,6 +244,59 @@ const ModalImageWrapper = styled.div`
   border-radius: 16px;
   overflow: hidden;
   box-shadow: 0 32px 80px rgba(0, 0, 0, 0.6);
+`;
+
+const ModalNavBtn = styled.button`
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+  background-color: rgba(0, 0, 0, 0.55);
+  border: 1.5px solid rgba(255, 255, 255, 0.25);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.5);
+  color: #fff;
+  border-radius: 50%;
+  width: 2.75rem;
+  height: 2.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 28px;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.8);
+    border-color: rgba(255, 255, 255, 0.5);
+  }
+  &[data-dir='prev'] { left: 0.75rem; }
+  &[data-dir='next'] { right: 0.75rem; }
+`;
+
+const ModalDots = styled.div`
+  display: flex;
+  justify-content: center;
+  gap: 0.375rem;
+  margin-top: 0.625rem;
+`;
+
+const ModalDot = styled.button<{ $active: boolean }>`
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  background-color: ${({ $active }) => $active ? 'rgba(255,255,255,0.9)' : 'rgba(255,255,255,0.35)'};
+  transition: background-color 0.15s ease;
+`;
+
+const ModalCaption = styled.p`
+  margin-top: 0.625rem;
+  text-align: center;
+  font-size: 0.8125rem;
+  color: rgba(255, 255, 255, 0.55);
+  letter-spacing: 0.01em;
 `;
 
 const cardVariants: Variants = {
@@ -253,7 +308,11 @@ const cardVariants: Variants = {
   }),
 };
 
-interface ModalState { src: string; alt: string; }
+interface ModalState {
+  images: readonly string[];
+  index: number;
+  title: string;
+}
 
 export function ProjectsSection() {
   const { Project } = resume;
@@ -273,16 +332,27 @@ export function ProjectsSection() {
     }));
   }, []);
 
+  const goModal = useCallback((dir: 1 | -1) => {
+    setModal((prev) => {
+      if (!prev) return prev;
+      return { ...prev, index: (prev.index + dir + prev.images.length) % prev.images.length };
+    });
+  }, []);
+
   useEffect(() => {
     if (!modal) return;
-    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') closeModal(); };
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') closeModal();
+      if (e.key === 'ArrowLeft') goModal(-1);
+      if (e.key === 'ArrowRight') goModal(1);
+    };
     window.addEventListener('keydown', onKey);
     document.body.style.overflow = 'hidden';
     return () => {
       window.removeEventListener('keydown', onKey);
       document.body.style.overflow = '';
     };
-  }, [modal, closeModal]);
+  }, [modal, closeModal, goModal]);
 
   return (
     <>
@@ -314,7 +384,7 @@ export function ProjectsSection() {
 
                 {images.length === 1 && (
                   <ImageSide>
-                    <ImageWrapper onClick={() => !hasErr(`${c.id}_0`) && setModal({ src: images[0], alt: c.title })}>
+                    <ImageWrapper onClick={() => !hasErr(`${c.id}_0`) && setModal({ images, index: 0, title: c.title })}>
                       {hasErr(`${c.id}_0`) ? (
                         <ImgFallback><ImgFallbackLabel>{c.title}</ImgFallbackLabel></ImgFallback>
                       ) : (
@@ -329,7 +399,7 @@ export function ProjectsSection() {
                     <SliderContainer>
                       <SliderTrack $index={getIdx(c.id)}>
                         {images.map((src, idx) => (
-                          <Slide key={src} onClick={() => !hasErr(`${c.id}_${idx}`) && setModal({ src, alt: `${c.title} ${idx + 1}` })}>
+                          <Slide key={src} onClick={() => !hasErr(`${c.id}_${idx}`) && setModal({ images, index: idx, title: c.title })}>
                             {hasErr(`${c.id}_${idx}`) ? (
                               <ImgFallback><ImgFallbackLabel>{c.title}</ImgFallbackLabel></ImgFallback>
                             ) : (
@@ -338,8 +408,8 @@ export function ProjectsSection() {
                           </Slide>
                         ))}
                       </SliderTrack>
-                      <SlideNavButton data-dir="prev" onClick={(e) => { e.stopPropagation(); goSlide(c.id, images.length, -1); }} aria-label="이전">&#8249;</SlideNavButton>
-                      <SlideNavButton data-dir="next" onClick={(e) => { e.stopPropagation(); goSlide(c.id, images.length, 1); }} aria-label="다음">&#8250;</SlideNavButton>
+                      <SlideNavButton data-dir="prev" onClick={(e) => { e.stopPropagation(); goSlide(c.id, images.length, -1); }} aria-label="이전"><span className="material-symbols-outlined">chevron_left</span></SlideNavButton>
+                      <SlideNavButton data-dir="next" onClick={(e) => { e.stopPropagation(); goSlide(c.id, images.length, 1); }} aria-label="다음"><span className="material-symbols-outlined">chevron_right</span></SlideNavButton>
                       <SliderDots>
                         {images.map((_, idx) => (
                           <SliderDot key={idx} $active={getIdx(c.id) === idx} onClick={(e) => { e.stopPropagation(); setSlideIndices((prev) => ({ ...prev, [c.id]: idx })); }} />
@@ -357,10 +427,40 @@ export function ProjectsSection() {
       {modal && (
         <ModalOverlay onClick={closeModal}>
           <ModalContent onClick={(e) => e.stopPropagation()}>
-            <CloseButton onClick={closeModal}>&#215;</CloseButton>
-            <ModalImageWrapper>
-              <Image src={modal.src} alt={modal.alt} fill style={{ objectFit: 'contain' }} sizes="min(90vw, 960px)" priority />
-            </ModalImageWrapper>
+            <CloseButton onClick={closeModal}><span className="material-symbols-outlined">close</span></CloseButton>
+            <ModalSlider>
+              <ModalImageWrapper>
+                <Image
+                  src={modal.images[modal.index]}
+                  alt={`${modal.title} ${modal.index + 1}`}
+                  fill
+                  style={{ objectFit: 'contain' }}
+                  sizes="min(90vw, 960px)"
+                  priority
+                />
+              </ModalImageWrapper>
+              {modal.images.length > 1 && (
+                <>
+                  <ModalNavBtn data-dir="prev" onClick={() => goModal(-1)} aria-label="이전"><span className="material-symbols-outlined">chevron_left</span></ModalNavBtn>
+                  <ModalNavBtn data-dir="next" onClick={() => goModal(1)} aria-label="다음"><span className="material-symbols-outlined">chevron_right</span></ModalNavBtn>
+                </>
+              )}
+            </ModalSlider>
+            {modal.images.length > 1 && (
+              <ModalDots>
+                {modal.images.map((_, idx) => (
+                  <ModalDot
+                    key={idx}
+                    $active={modal.index === idx}
+                    onClick={() => setModal((prev) => prev ? { ...prev, index: idx } : prev)}
+                    aria-label={`${idx + 1}번째 이미지`}
+                  />
+                ))}
+              </ModalDots>
+            )}
+            <ModalCaption>
+              {modal.images[modal.index].split('/').pop()?.replace(/\.[^.]+$/, '') ?? modal.title}
+            </ModalCaption>
           </ModalContent>
         </ModalOverlay>
       )}

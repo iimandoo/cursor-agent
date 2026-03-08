@@ -52,13 +52,6 @@ const ContactInfoItem = styled.a`
   }
 `;
 
-const ContactLabel = styled.span`
-  font-size: 0.875rem;
-  color: ${(props) => props.theme.colors.mutedForeground};
-  min-width: 3rem;
-  text-align: right;
-`;
-
 const GitHubLink = styled.a`
   display: inline-flex;
   align-items: center;
@@ -90,19 +83,20 @@ export function ContactSection() {
           <SectionDesc>함께 만들어갈 프로젝트가 있다면 편하게 연락 주세요.</SectionDesc>
           <ContactInfoList>
             <ContactInfoItem href={`mailto:${profile.email}`}>
-              <ContactLabel>이메일</ContactLabel>
+              <span className="material-symbols-outlined" style={{ fontSize: '1.1rem' }}>mail</span>
               {profile.email}
             </ContactInfoItem>
             {profile.phone && (
               <ContactInfoItem href={`tel:${profile.phone}`}>
-                <ContactLabel>전화</ContactLabel>
+                <span className="material-symbols-outlined" style={{ fontSize: '1.1rem' }}>call</span>
                 {profile.phone}
               </ContactInfoItem>
             )}
           </ContactInfoList>
           {profile.social.github && (
             <GitHubLink href={profile.social.github} target="_blank" rel="noopener noreferrer">
-              GitHub →
+              <span className="material-symbols-outlined" style={{ fontSize: '1.1rem' }}>open_in_new</span>
+              GitHub
             </GitHubLink>
           )}
         </motion.div>

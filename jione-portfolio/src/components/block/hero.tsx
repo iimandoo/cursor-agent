@@ -107,7 +107,7 @@ export function HeroSection() {
             animate={{ y: [0, 6, 0] }}
             transition={{ repeat: Infinity, duration: 1.8, ease: 'easeInOut' }}
           >
-            <span>↓</span>
+            <span className="material-symbols-outlined" style={{ fontSize: '1.5rem' }}>expand_more</span>
           </ScrollIndicator>
         </HeroInner>
       </motion.div>
