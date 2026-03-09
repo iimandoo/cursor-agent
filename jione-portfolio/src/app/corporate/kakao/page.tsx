@@ -40,12 +40,12 @@ const skillCategories = [
 ];
 
 const projectCases = [
-  { id: 'ai-mata', title: 'AI마타수학 2026년 리뉴얼', year: '2023 ~ 현재', execution: 'Next.js, React, TypeScript, Redux, AWS CodeCommit', images: ['/projects/AI마타수학2026_선생님 홈화면_1.png', '/projects/AI마타수학2026_선생님 수업현황보드.png', '/projects/AI마타수학2026_선생님 문제풀이.png', '/projects/AI마타수학2026_학생 홈화면_2.png', '/projects/AI마타수학2026_학생 문제풀이.png', '/projects/AI마타수학2026_학생_AI첨삭.png'] },
-  { id: 'ai-mata-highschool', title: 'AI마타수학 (중고등)', year: '2023 ~ 현재', execution: 'React, TypeScript, Redux, AWS CodeCommit', images: ['/projects/AI마타수학_중고등_선생님_홈.png', '/projects/AI마타수학_중고등_선생님_커리큘럼.png', '/projects/AI마타수학_중고등_선생님_실시간현황보드.png', '/projects/AI마타수학_중고등_선생님_문제풀이.png', '/projects/AI마타수학_중고등_선생님_보고서.png', '/projects/AI마타수학_중고등_학생_홈.png'] },
-  { id: 'ai-mata-elementary', title: 'AI마타수학 (초등)', year: '2023 ~ 현재', execution: 'React, TypeScript, Redux, AWS CodeCommit', images: ['/projects/AI마타수학_초등_선생님_홈.png', '/projects/AI마타수학_초등_선생님_커리큘럼.png', '/projects/AI마타수학_초등_선생님_문제풀이.png', '/projects/AI마타수학_초등_학생_홈.png', '/projects/AI마타수학_초등_학생_그림로그인.png'] },
+  { id: 'ai-mata', title: 'AI마타수학 2026년 리뉴얼', year: '2023 ~ 현재', execution: 'Next.js, React, TypeScript, Redux', images: ['/projects/AI마타수학2026_선생님 홈화면_1.png', '/projects/AI마타수학2026_선생님 수업현황보드.png', '/projects/AI마타수학2026_선생님 문제풀이.png', '/projects/AI마타수학2026_학생 홈화면_2.png', '/projects/AI마타수학2026_학생 문제풀이.png', '/projects/AI마타수학2026_학생_AI첨삭.png'] },
+  { id: 'ai-mata-highschool', title: 'AI마타수학 (중고등)', year: '2023 ~ 현재', execution: 'React, TypeScript, Redux', images: ['/projects/AI마타수학_중고등_선생님_홈.png', '/projects/AI마타수학_중고등_선생님_커리큘럼.png', '/projects/AI마타수학_중고등_선생님_실시간현황보드.png', '/projects/AI마타수학_중고등_선생님_문제풀이.png', '/projects/AI마타수학_중고등_선생님_보고서.png', '/projects/AI마타수학_중고등_학생_홈.png'] },
+  { id: 'ai-mata-elementary', title: 'AI마타수학 (초등)', year: '2023 ~ 현재', execution: 'React, TypeScript, Redux', images: ['/projects/AI마타수학_초등_선생님_홈.png', '/projects/AI마타수학_초등_선생님_커리큘럼.png', '/projects/AI마타수학_초등_선생님_문제풀이.png', '/projects/AI마타수학_초등_학생_홈.png', '/projects/AI마타수학_초등_학생_그림로그인.png'] },
   { id: 'paddly', title: '패들리', year: '2025', execution: 'Figma, Make(업무자동화)', images: ['/projects/패들리_홈.png', '/projects/패들리_카드뒤집기1.png', '/projects/패들리_카드뒤집기2.png', '/projects/패들리_마법대전1.png', '/projects/패들리_마법대전2.png', '/projects/패들리_퍼즐맞추기1.png', '/projects/패들리_퍼즐맞추기2.png'] },
-  { id: 'cool-hanja', title: '쿨한자', year: '2025', execution: 'Next.js, TypeScript, Vercel', urls: [{ label: '서비스 보기', href: 'https://cool-hanja.vercel.app' }], images: ['/projects/쿨한자_한자카드.png', '/projects/쿨한자_뜻음.png', '/projects/쿨한자_학년설정.png', '/projects/쿨한자_급수설정.png', '/projects/쿨한자_한자추가.png'] },
-  { id: 'modofit', title: '모도핏', year: '2025', execution: 'Next.js, TypeScript, Vercel', urls: [{ label: '서비스 보기', href: 'https://modofit.vercel.app' }], images: ['/projects/모도핏_홈.png', '/projects/모도핏_홈_로그인후.png', '/projects/모도핏_홈_캘린더.png', '/projects/모도핏_인바디.png'] },
+  { id: 'cool-hanja', title: '쿨한자', year: '2025', execution: 'Next.js, TypeScript, Vercel', images: ['/projects/쿨한자_한자카드.png', '/projects/쿨한자_뜻음.png', '/projects/쿨한자_학년설정.png', '/projects/쿨한자_급수설정.png', '/projects/쿨한자_한자추가.png'] },
+  { id: 'modofit', title: '모도핏', year: '2025', execution: 'Next.js, TypeScript, Vercel', images: ['/projects/모도핏_홈.png', '/projects/모도핏_홈_로그인후.png', '/projects/모도핏_홈_캘린더.png', '/projects/모도핏_인바디.png'] },
   { id: 'baemin-sangwoe', title: '배민상회 Admin', year: '2014 ~ 2022', execution: 'React, TypeScript, Styled-Components, React-Query, Storybook', images: [] },
 ];
 

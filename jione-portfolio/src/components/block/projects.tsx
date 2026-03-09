@@ -65,7 +65,14 @@ const CardTitle = styled.h3`
 const CardCompany = styled.p`
   font-size: 0.875rem;
   color: ${(props) => props.theme.colors.mutedForeground};
-  margin-bottom: 1rem;
+  margin-bottom: 0.25rem;
+`;
+
+const CardRole = styled.p`
+  font-size: 0.8125rem;
+  color: ${(props) => props.theme.colors.primary};
+  font-weight: 500;
+  margin-bottom: 0.875rem;
 `;
 
 const CardDescription = styled.p`
@@ -349,6 +356,7 @@ export interface ProjectCase {
   id: string;
   title: string;
   company?: string;
+  role?: string;
   description?: string;
   execution: string;
   tools?: string;
@@ -422,6 +430,7 @@ export function ProjectsSection({ intro, cases }: ProjectsSectionProps) {
                 <CardBody>
                   <CardTitle>{c.title}</CardTitle>
                   {c.company && <CardCompany>{c.company}</CardCompany>}
+                  {c.role && <CardRole>{c.role}</CardRole>}
                   {c.description && <CardDescription>{c.description}</CardDescription>}
                   <CardDescription>{c.execution}</CardDescription>
                   {c.tools && (

@@ -208,7 +208,6 @@ export const resume = {
         tools: "AI (Claude, Gemini)",
         role: "PM, 서비스 기획, 개발",
         year: "2025",
-        urls: [{ label: "서비스 보기", href: "https://cool-hanja.vercel.app" }],
         images: [
           "/projects/쿨한자_한자카드.png",
           "/projects/쿨한자_뜻음.png",
@@ -227,7 +226,6 @@ export const resume = {
         tools: "AI (Claude, Gemini)",
         year: "2025",
         role: "프론트엔드 개발",
-        urls: [{ label: "서비스 보기", href: "https://modofit.vercel.app" }],
         images: [
           "/projects/모도핏_홈.png",
           "/projects/모도핏_홈_로그인후.png",
