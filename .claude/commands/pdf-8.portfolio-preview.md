@@ -1,6 +1,6 @@
 # pdf-8: 포트폴리오 자동 생성 & 미리보기
 
-PDF → resume.ts 변환 완료 후, 변환된 데이터를 기반으로 포트폴리오를 자동 생성하고 미리보기한다.
+Portfolio Builder에서 PDF 변환 완료 후, 변환된 데이터를 기반으로 포트폴리오를 자동 생성하고 미리보기한다.
 기존 pm-portfolio(pm-site-builder)에서 구축한 block/corporate 컴포넌트와 theme 시스템을 재사용한다.
 
 ---

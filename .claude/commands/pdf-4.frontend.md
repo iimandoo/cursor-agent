@@ -1,8 +1,8 @@
 ---
-description: PDF → resume.ts 변환 프론트엔드 개발 — PDF 업로드 UI, 미리보기, 편집 폼, 다운로드
+description: Portfolio Builder 프론트엔드 개발 — 랜딩페이지, PDF 업로드 UI, 미리보기, 편집 폼, 다운로드
 ---
 
-# FE 개발 — PDF 업로드 & 편집 UI
+# FE 개발 — Portfolio Builder UI
 
 선행: `pdf-2.backend.md` + `pdf-3.ai-enrich.md` API 완료 필수
 
@@ -10,27 +10,208 @@ description: PDF → resume.ts 변환 프론트엔드 개발 — PDF 업로드 U
 
 ## 개발 범위
 
-1. PDF 업로드 페이지
-2. 파싱 결과 미리보기 + 인라인 편집
-3. AI 보완 실행 UI
-4. resume.ts 다운로드
+1. **랜딩페이지** (톤앤매너 적용)
+2. PDF 업로드 페이지
+3. 파싱 결과 미리보기 + 인라인 편집
+4. AI 보완 실행 UI
+5. resume.ts 다운로드
 
 ---
 
-## Step 1: 페이지 라우트
+## 톤앤매너 적용 규칙
 
-```
-src/app/pdf/
-  ├── page.tsx         ← 업로드 화면
-  └── result/
-      └── page.tsx     ← 미리보기 + 편집 화면
+서비스 전체 페이지에 jione-portfolio의 theme 시스템을 적용한다.
+
+**기본 톤**: `toss` (Toss 블루 #3182F6 기반)
+
+1. `src/app/pdf/layout.tsx` 생성 — `/pdf/*` 전체를 StyleProvider로 감싸기:
+   ```typescript
+   'use client';
+   import { StyleProvider } from '@/styles/provider';
+   import { tossTheme } from '@/styles/themes/toss';
+
+   export default function PdfLayout({ children }: { children: React.ReactNode }) {
+     return <StyleProvider theme={tossTheme}>{children}</StyleProvider>;
+   }
+   ```
+
+2. 모든 styled-components에서 하드코딩 색상 대신 `theme` 사용:
+   ```typescript
+   // ❌ 하드코딩
+   background: #3182f6;
+   color: #111;
+
+   // ✅ theme 토큰 사용
+   background: ${({ theme }) => theme.colors.primary};
+   color: ${({ theme }) => theme.colors.text};
+   ```
+
+3. theme 토큰 매핑:
+   | 하드코딩 | theme 토큰 |
+   |---------|-----------|
+   | `#3182f6` | `theme.colors.primary` |
+   | `#111`, `#333` | `theme.colors.text` |
+   | `#666`, `#999` | `theme.colors.subText` |
+   | `#f8f9fa`, `#fafafa` | `theme.colors.background` |
+   | `white` | `theme.colors.surface` |
+   | `#e2e8f0`, `#cbd5e0` | `theme.colors.border` |
+   | `#7c3aed` | AI 보완 전용 — 하드코딩 유지 가능 |
+
+---
+
+## Step 1: 랜딩페이지
+
+`src/app/page.tsx` — Portfolio Builder 서비스 진입점:
+
+```typescript
+'use client';
+
+import styled from 'styled-components';
+import { useRouter } from 'next/navigation';
+import { StyleProvider } from '@/styles/provider';
+import { tossTheme } from '@/styles/themes/toss';
+
+const Page = styled.div`
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: ${({ theme }) => theme.colors.background};
+  padding: 2rem;
+`;
+
+const Hero = styled.section`
+  text-align: center;
+  max-width: 640px;
+`;
+
+const Title = styled.h1`
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: ${({ theme }) => theme.colors.text};
+  margin-bottom: 1rem;
+  line-height: 1.3;
+`;
+
+const Highlight = styled.span`
+  color: ${({ theme }) => theme.colors.primary};
+`;
+
+const Desc = styled.p`
+  font-size: 1.125rem;
+  color: ${({ theme }) => theme.colors.subText};
+  line-height: 1.8;
+  margin-bottom: 2.5rem;
+`;
+
+const CTAButton = styled.button`
+  padding: 1rem 2.5rem;
+  background: ${({ theme }) => theme.colors.primary};
+  color: white;
+  border: none;
+  border-radius: ${({ theme }) => theme.radius.md};
+  font-size: 1.125rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: opacity 0.15s ease;
+  &:hover { opacity: 0.88; }
+`;
+
+const Features = styled.section`
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  max-width: 800px;
+  margin-top: 4rem;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
+`;
+
+const FeatureCard = styled.div`
+  background: ${({ theme }) => theme.colors.surface};
+  border-radius: ${({ theme }) => theme.radius.lg};
+  padding: 2rem;
+  text-align: center;
+  box-shadow: ${({ theme }) => theme.shadows.card};
+`;
+
+const FeatureIcon = styled.div`font-size: 2rem; margin-bottom: 0.75rem;`;
+const FeatureTitle = styled.h3`
+  font-weight: 700;
+  color: ${({ theme }) => theme.colors.text};
+  margin-bottom: 0.5rem;
+`;
+const FeatureDesc = styled.p`
+  font-size: 0.875rem;
+  color: ${({ theme }) => theme.colors.subText};
+  line-height: 1.6;
+`;
+
+export default function LandingPage() {
+  const router = useRouter();
+
+  return (
+    <StyleProvider theme={tossTheme}>
+      <Page>
+        <Hero>
+          <Title>
+            PDF 한 장으로<br/>
+            <Highlight>포트폴리오</Highlight>가 완성됩니다
+          </Title>
+          <Desc>
+            이력서 PDF를 업로드하면 AI가 자동으로 분석하고,<br/>
+            8가지 디자인의 포트폴리오를 즉시 생성합니다.
+          </Desc>
+          <CTAButton onClick={() => router.push('/pdf')}>
+            시작하기
+          </CTAButton>
+        </Hero>
+
+        <Features>
+          <FeatureCard>
+            <FeatureIcon>📄</FeatureIcon>
+            <FeatureTitle>PDF 자동 파싱</FeatureTitle>
+            <FeatureDesc>경력, 프로젝트, 스킬을 자동으로 추출합니다</FeatureDesc>
+          </FeatureCard>
+          <FeatureCard>
+            <FeatureIcon>🤖</FeatureIcon>
+            <FeatureTitle>AI 보완</FeatureTitle>
+            <FeatureDesc>부족한 내용을 Gemini AI가 자동으로 채워줍니다</FeatureDesc>
+          </FeatureCard>
+          <FeatureCard>
+            <FeatureIcon>🎨</FeatureIcon>
+            <FeatureTitle>8가지 디자인</FeatureTitle>
+            <FeatureDesc>Block × Corporate 스타일과 4가지 톤을 선택하세요</FeatureDesc>
+          </FeatureCard>
+        </Features>
+      </Page>
+    </StyleProvider>
+  );
+}
 ```
 
 ---
 
-## Step 2: 업로드 페이지
+## Step 2: 페이지 라우트
 
-`src/app/pdf/page.tsx`:
+```
+src/app/
+  ├── page.tsx              ← 랜딩페이지 (톤앤매너 적용)
+  └── pdf/
+      ├── layout.tsx        ← StyleProvider (tossTheme) 래핑
+      ├── page.tsx          ← 업로드 화면
+      └── result/
+          └── page.tsx      ← 미리보기 + 편집 화면
+```
+
+---
+
+## Step 3: 업로드 페이지
+
+`src/app/pdf/page.tsx` — layout.tsx의 StyleProvider에 의해 theme이 자동 적용됨:
 
 ```typescript
 'use client';
@@ -44,29 +225,29 @@ const Wrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #f8f9fa;
+  background: ${({ theme }) => theme.colors.background};
   padding: 2rem;
 `;
 
 const Card = styled.div`
-  background: white;
-  border-radius: 16px;
+  background: ${({ theme }) => theme.colors.surface};
+  border-radius: ${({ theme }) => theme.radius.lg};
   padding: 3rem;
   max-width: 480px;
   width: 100%;
-  box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+  box-shadow: ${({ theme }) => theme.shadows.card};
   text-align: center;
 `;
 
 const Title = styled.h1`
   font-size: 1.75rem;
   font-weight: 700;
-  color: #111;
+  color: ${({ theme }) => theme.colors.text};
   margin-bottom: 0.5rem;
 `;
 
 const Subtitle = styled.p`
-  color: #666;
+  color: ${({ theme }) => theme.colors.subText};
   margin-bottom: 2rem;
   line-height: 1.6;
 `;
@@ -76,31 +257,31 @@ const DropZone = styled.label<{ $isDragging: boolean; $hasError: boolean }>`
   flex-direction: column;
   align-items: center;
   gap: 0.75rem;
-  border: 2px dashed ${({ $hasError }) => ($hasError ? '#e53e3e' : '#cbd5e0')};
-  border-radius: 12px;
+  border: 2px dashed ${({ $hasError, theme }) => ($hasError ? '#e53e3e' : theme.colors.border)};
+  border-radius: ${({ theme }) => theme.radius.md};
   padding: 3rem 2rem;
   cursor: pointer;
   transition: all 0.2s ease;
-  background: ${({ $isDragging }) => ($isDragging ? '#ebf8ff' : '#fafafa')};
-  border-color: ${({ $isDragging }) => ($isDragging ? '#3182f6' : undefined)};
+  background: ${({ $isDragging, theme }) => ($isDragging ? `${theme.colors.primary}10` : theme.colors.background)};
+  border-color: ${({ $isDragging, theme }) => ($isDragging ? theme.colors.primary : undefined)};
 
-  &:hover { border-color: #3182f6; background: #ebf8ff; }
+  &:hover { border-color: ${({ theme }) => theme.colors.primary}; background: ${({ theme }) => `${theme.colors.primary}10`}; }
 `;
 
 const FileInput = styled.input`display: none;`;
 
 const UploadIcon = styled.span`font-size: 2.5rem;`;
-const DropText = styled.p`font-size: 1rem; color: #444; font-weight: 500;`;
-const DropHint = styled.p`font-size: 0.8125rem; color: #999;`;
+const DropText = styled.p`font-size: 1rem; color: ${({ theme }) => theme.colors.text}; font-weight: 500;`;
+const DropHint = styled.p`font-size: 0.8125rem; color: ${({ theme }) => theme.colors.subText};`;
 const ErrorMsg = styled.p`color: #e53e3e; font-size: 0.875rem; margin-top: 0.5rem;`;
 
 const Button = styled.button<{ $loading?: boolean }>`
   width: 100%;
   padding: 0.875rem;
-  background: #3182f6;
+  background: ${({ theme }) => theme.colors.primary};
   color: white;
   border: none;
-  border-radius: 10px;
+  border-radius: ${({ theme }) => theme.radius.md};
   font-size: 1rem;
   font-weight: 600;
   cursor: ${({ $loading }) => ($loading ? 'not-allowed' : 'pointer')};
@@ -161,8 +342,8 @@ export default function PdfUploadPage() {
   return (
     <Wrapper>
       <Card>
-        <Title>PDF → resume.ts</Title>
-        <Subtitle>PDF 이력서를 업로드하면<br/>포트폴리오 데이터로 자동 변환합니다</Subtitle>
+        <Title>Portfolio Builder</Title>
+        <Subtitle>PDF 이력서를 업로드하면<br/>포트폴리오가 자동으로 완성됩니다</Subtitle>
 
         <DropZone
           $isDragging={isDragging}
@@ -198,9 +379,9 @@ export default function PdfUploadPage() {
 
 ---
 
-## Step 3: 결과 미리보기 + 편집
+## Step 4: 결과 미리보기 + 편집
 
-`src/app/pdf/result/page.tsx` (핵심 구조):
+`src/app/pdf/result/page.tsx` — layout.tsx의 StyleProvider에 의해 theme 자동 적용:
 
 ```typescript
 'use client';
@@ -210,7 +391,7 @@ import { useRouter } from 'next/navigation';
 import type { ResumeDto } from '@/types/resume-dto';
 import styled from 'styled-components';
 
-// ─── Styled Components ──────────────────────────────────────────────
+// ─── Styled Components (theme 토큰 사용) ────────────────────────────
 
 const Layout = styled.div`
   max-width: 900px;
@@ -225,31 +406,35 @@ const Header = styled.div`
   margin-bottom: 2rem;
 `;
 
-const Title = styled.h1`font-size: 1.5rem; font-weight: 700;`;
+const Title = styled.h1`
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: ${({ theme }) => theme.colors.text};
+`;
 
 const ActionBar = styled.div`display: flex; gap: 0.75rem;`;
 
 const Btn = styled.button<{ $variant?: 'primary' | 'ai' | 'outline' }>`
   padding: 0.6rem 1.25rem;
-  border-radius: 8px;
+  border-radius: ${({ theme }) => theme.radius.md};
   font-weight: 600;
   font-size: 0.9rem;
   cursor: pointer;
-  border: ${({ $variant }) =>
-    $variant === 'outline' ? '1px solid #cbd5e0' : 'none'};
-  background: ${({ $variant }) =>
-    $variant === 'primary' ? '#3182f6'
+  border: ${({ $variant, theme }) =>
+    $variant === 'outline' ? `1px solid ${theme.colors.border}` : 'none'};
+  background: ${({ $variant, theme }) =>
+    $variant === 'primary' ? theme.colors.primary
     : $variant === 'ai' ? '#7c3aed'
-    : 'white'};
-  color: ${({ $variant }) =>
-    ($variant === 'primary' || $variant === 'ai') ? 'white' : '#333'};
+    : theme.colors.surface};
+  color: ${({ $variant, theme }) =>
+    ($variant === 'primary' || $variant === 'ai') ? 'white' : theme.colors.text};
   &:hover { opacity: 0.88; }
 `;
 
 const Tabs = styled.div`
   display: flex;
   gap: 0.25rem;
-  border-bottom: 2px solid #e2e8f0;
+  border-bottom: 2px solid ${({ theme }) => theme.colors.border};
   margin-bottom: 1.5rem;
 `;
 
@@ -259,8 +444,8 @@ const Tab = styled.button<{ $active: boolean }>`
   background: none;
   cursor: pointer;
   font-weight: ${({ $active }) => ($active ? 700 : 400)};
-  color: ${({ $active }) => ($active ? '#3182f6' : '#666')};
-  border-bottom: 2px solid ${({ $active }) => ($active ? '#3182f6' : 'transparent')};
+  color: ${({ $active, theme }) => ($active ? theme.colors.primary : theme.colors.subText)};
+  border-bottom: 2px solid ${({ $active, theme }) => ($active ? theme.colors.primary : 'transparent')};
   margin-bottom: -2px;
 `;
 
@@ -269,7 +454,7 @@ const Label = styled.label`
   display: block;
   font-size: 0.8rem;
   font-weight: 600;
-  color: #666;
+  color: ${({ theme }) => theme.colors.subText};
   text-transform: uppercase;
   letter-spacing: 0.05em;
   margin-bottom: 0.375rem;
@@ -277,17 +462,17 @@ const Label = styled.label`
 const Input = styled.input<{ $aiGenerated?: boolean }>`
   width: 100%;
   padding: 0.625rem 0.875rem;
-  border: 1px solid ${({ $aiGenerated }) => ($aiGenerated ? '#d6bcfa' : '#e2e8f0')};
-  border-radius: 8px;
-  background: ${({ $aiGenerated }) => ($aiGenerated ? '#faf5ff' : 'white')};
+  border: 1px solid ${({ $aiGenerated, theme }) => ($aiGenerated ? '#d6bcfa' : theme.colors.border)};
+  border-radius: ${({ theme }) => theme.radius.md};
+  background: ${({ $aiGenerated, theme }) => ($aiGenerated ? '#faf5ff' : theme.colors.surface)};
   font-size: 0.9375rem;
 `;
 const Textarea = styled.textarea<{ $aiGenerated?: boolean }>`
   width: 100%;
   padding: 0.625rem 0.875rem;
-  border: 1px solid ${({ $aiGenerated }) => ($aiGenerated ? '#d6bcfa' : '#e2e8f0')};
-  border-radius: 8px;
-  background: ${({ $aiGenerated }) => ($aiGenerated ? '#faf5ff' : 'white')};
+  border: 1px solid ${({ $aiGenerated, theme }) => ($aiGenerated ? '#d6bcfa' : theme.colors.border)};
+  border-radius: ${({ theme }) => theme.radius.md};
+  background: ${({ $aiGenerated, theme }) => ($aiGenerated ? '#faf5ff' : theme.colors.surface)};
   font-size: 0.9375rem;
   min-height: 80px;
   resize: vertical;
@@ -535,8 +720,11 @@ export default function ResultPage() {
 
 ## 완료 체크리스트
 
-- [ ] `src/app/pdf/page.tsx` — 업로드 화면 (드래그&드롭, 유효성 검사)
-- [ ] `src/app/pdf/result/page.tsx` — 결과 편집 화면 (4개 탭)
+- [ ] `src/app/page.tsx` — 랜딩페이지 (톤앤매너 적용, Hero + Feature 카드)
+- [ ] `src/app/pdf/layout.tsx` — StyleProvider(tossTheme) 래핑
+- [ ] `src/app/pdf/page.tsx` — 업로드 화면 (theme 토큰 사용)
+- [ ] `src/app/pdf/result/page.tsx` — 결과 편집 화면 (theme 토큰 사용)
+- [ ] 모든 styled-components에서 하드코딩 색상 → theme 토큰으로 교체
 - [ ] AI 보완 결과 보라색 배경 + "AI 생성" 뱃지 표시
 - [ ] 모든 필드 인라인 편집 가능
 - [ ] resume.ts 다운로드 동작 확인
